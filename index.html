@@ -40,7 +40,7 @@
   --pad:clamp(1.25rem,5vw,2rem);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
+html{scroll-behavior:smooth;scroll-padding-top:70px}
 body{
   font-family:var(--body);font-size:16px;line-height:1.65;color:var(--txt);
   background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;
@@ -474,6 +474,22 @@ footer{border-top:1px solid var(--line);background:rgba(5,9,18,.6)}
   #home{padding-top:100px}
   .lightbox-nav{width:38px;height:38px}
   .lightbox-nav.prev{left:8px}.lightbox-nav.next{right:8px}
+}
+/* ═══ HERO SPACING (one place to adjust) ═══ */
+@media (min-width:861px){
+  #home{
+    padding-top:96px !important;   /* ← space under the nav: change this number */
+    padding-bottom:32px !important;
+    gap:2.5rem !important;
+  }
+  #home .hero-badge{margin-bottom:1rem !important}
+  #home .hero-name{
+    font-size:clamp(2.6rem,4.8vw,4.2rem) !important;
+    margin-bottom:.6rem !important;
+  }
+  #home .hero-title{margin-bottom:.7rem !important}
+  #home .hero-desc{margin-bottom:1.2rem !important}
+  #home .hero-stats{margin-top:1.2rem !important}
 }
 </style>
 </head>
