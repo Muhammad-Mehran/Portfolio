@@ -491,6 +491,11 @@ footer{border-top:1px solid var(--line);background:rgba(5,9,18,.6)}
   #home .hero-desc{margin-bottom:1.2rem !important}
   #home .hero-stats{margin-top:1.2rem !important}
 }
+   .case-visual.missing-image img{display:none}
+
+@media (max-width:1060px){
+  .case-visual{min-height:220px}   /* safety net so the image area never collapses */
+}
 </style>
 </head>
 <body>
@@ -1113,15 +1118,12 @@ footer{border-top:1px solid var(--line);background:rgba(5,9,18,.6)}
   });
 
   /* case-study visuals: placeholder when the image is missing */
-  document.querySelectorAll('.case-visual').forEach(v => {
-    const img = v.querySelector('img');
-    const missing = () => { v.classList.add('missing-image'); img.style.display = 'none'; };
-    const ok = () => { v.classList.remove('missing-image'); img.style.display = 'block'; };
-    img.addEventListener('error', missing);
-    img.addEventListener('load', () => img.naturalWidth ? ok() : missing());
-    if (img.complete) img.naturalWidth ? ok() : missing();
-    v.addEventListener('click', () => { if (!v.classList.contains('missing-image')) openLightbox([img.src], 0); });
-  });
+ document.querySelectorAll('.case-visual').forEach(v => {
+  const img = v.querySelector('img');
+  img.addEventListener('error', () => v.classList.add('missing-image'));
+  img.addEventListener('load', () => v.classList.remove('missing-image'));
+  v.addEventListener('click', () => { if (!v.classList.contains('missing-image')) openLightbox([img.src], 0); });
+});
 
   /* contact form */
   async function handleFormSubmit(e){
