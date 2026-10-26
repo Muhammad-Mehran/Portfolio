@@ -1,745 +1,487 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Muhammad Mehran – Dynamics 365 CRM Developer. Custom CRM, Power Platform, C# plugins, Microsoft Fabric." />
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
-  <title>Muhammad Mehran — Dynamics 365 CRM Developer</title>
-  <link href="img/favicon.png" rel="icon">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <style>
-    /* ─── LIGHT THEME TOKENS ─── */
-    :root {
-      --bg:       #f8fafc;
-      --bg2:      #ffffff;
-      --bg3:      #f1f5f9;
-      --line:     rgba(0,0,0,0.08);
-      --accent:   #0077ff;
-      --accent2:  #6366f1;
-      --accent3:  #10b981;
-      --txt:      #0f172a;
-      --txt2:     #334155;
-      --card:     #ffffff;
-      --card2:    #f8fafc;
-      --radius:   16px;
-      --mono:     'DM Sans', monospace;
-      --head:     'Poppins', sans-serif;
-      --body:     'DM Sans', sans-serif;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Muhammad Mehran - Dynamics 365 CE Developer and Consultant focused on scalable CRM architecture, C# plugins, Power Platform, enterprise integrations, Microsoft Fabric, and AI-assisted solutions.">
+<meta name="theme-color" content="#060b16">
+<title>Muhammad Mehran - Dynamics 365 CRM Developer</title>
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+/* ═══════════════════════════════════════════════════════════
+   DESIGN TOKENS  (single source of truth — change here only)
+   ═══════════════════════════════════════════════════════════ */
+:root{
+  --bg:#060b16;
+  --bg-soft:#0a1222;
+  --surface:rgba(255,255,255,.035);
+  --surface-hi:rgba(255,255,255,.06);
+  --line:rgba(148,163,184,.15);
+  --line-hi:rgba(94,160,255,.45);
+  --txt:#eef4ff;
+  --txt2:#a9b8cf;
+  --txt3:#7487a3;
+  --accent:#5ea0ff;
+  --accent2:#8b5cf6;
+  --cyan:#22d3ee;
+  --green:#2dd4a0;
+  --grad:linear-gradient(135deg,#5ea0ff 0%,#8b5cf6 55%,#22d3ee 130%);
+  --radius:20px;
+  --radius-sm:12px;
+  --shadow:0 20px 50px -20px rgba(0,0,0,.6);
+  --shadow-hi:0 30px 70px -20px rgba(0,0,0,.75),0 0 0 1px rgba(94,160,255,.25);
+  --head:'Poppins',sans-serif;
+  --body:'DM Sans',sans-serif;
+  --pad:clamp(1.25rem,5vw,2rem);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{
+  font-family:var(--body);font-size:16px;line-height:1.65;color:var(--txt);
+  background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+/* ambient background */
+body::before{
+  content:'';position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(40rem 28rem at 8% 6%,rgba(94,160,255,.16),transparent 70%),
+    radial-gradient(36rem 26rem at 92% 12%,rgba(139,92,246,.15),transparent 70%),
+    radial-gradient(40rem 30rem at 50% 70%,rgba(34,211,238,.06),transparent 70%),
+    var(--bg);
+}
+body::after{
+  content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:56px 56px;
+  -webkit-mask-image:radial-gradient(ellipse at 50% 20%,#000 0%,transparent 72%);
+          mask-image:radial-gradient(ellipse at 50% 20%,#000 0%,transparent 72%);
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+::selection{background:rgba(94,160,255,.35)}
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:#243452;border-radius:99px}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 75px;
-    }
-    body {
-      background: var(--bg);
-      color: var(--txt);
-      font-family: var(--body);
-      font-size: 16px;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-    @media (max-width: 640px) {
-      body { font-size: 17px; }
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
+/* ═══ LAYOUT ═══ */
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+section{position:relative}
+.section-inner{max-width:1180px;margin:0 auto;padding:64px var(--pad)}
+.sec-head{margin-bottom:2rem;max-width:720px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.6rem;
+  font-family:var(--body);font-size:.75rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:.9rem;
+}
+.eyebrow::before{content:'';width:28px;height:2px;background:var(--grad);border-radius:99px}
+.section-title{
+  font-family:var(--head);font-size:clamp(1.9rem,3.4vw,2.7rem);font-weight:700;
+  letter-spacing:-.03em;line-height:1.15;color:#fff;
+}
+.sec-sub{margin-top:.8rem;color:var(--txt2);font-size:1rem}
+.sub-block{margin-top:4rem}
+.sub-block:first-of-type{margin-top:0}
 
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: #e2e8f0; }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 99px; }
+/* ═══ SHARED CARD ═══ */
+.card{
+  position:relative;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02));
+  border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);backdrop-filter:blur(10px);
+  transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.card:hover{transform:translateY(-4px);border-color:var(--line-hi);box-shadow:var(--shadow-hi)}
+.icon-box{
+  width:46px;height:46px;flex-shrink:0;border-radius:14px;display:grid;place-items:center;font-size:1.1rem;
+  background:linear-gradient(145deg,rgba(94,160,255,.2),rgba(139,92,246,.14));
+  color:#dbe9ff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+}
+.tag{
+  font-size:.72rem;font-weight:500;padding:.22rem .7rem;border-radius:99px;white-space:nowrap;
+  background:rgba(94,160,255,.1);color:#cfe1ff;border:1px solid rgba(94,160,255,.18);
+}
+.tags{display:flex;flex-wrap:wrap;gap:.45rem}
 
-    /* ─── NAVBAR ─── */
-    /* ─── NAVBAR ─── */
-nav {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0;
-  z-index: 100;
-  background: rgba(255,255,255,0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--line);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+/* ═══ NAV ═══ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;height:70px;
+  background:rgba(6,11,22,.78);backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.nav-container{max-width:1180px;margin:0 auto;height:100%;padding:0 var(--pad);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.nav-logo{font-family:var(--head);font-weight:800;font-size:.95rem;letter-spacing:.12em;color:#fff}
+.nav-logo span{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.nav-links{display:flex;gap:.35rem;list-style:none}
+.nav-links a{
+  font-size:.86rem;font-weight:500;color:var(--txt2);padding:.45rem .85rem;border-radius:99px;transition:all .2s;
+}
+.nav-links a:hover{color:#fff;background:var(--surface-hi)}
+.nav-links a.active{color:#fff;background:rgba(94,160,255,.16)}
+.btn-primary,.nav-cta{
+  display:inline-flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:600;color:#fff;
+  padding:.72rem 1.6rem;border-radius:99px;background:var(--grad);
+  box-shadow:0 12px 30px -8px rgba(94,160,255,.55);transition:transform .2s,box-shadow .2s;
+}
+.nav-cta{padding:.55rem 1.25rem;font-size:.84rem}
+.btn-primary:hover,.nav-cta:hover{transform:translateY(-2px);box-shadow:0 16px 36px -8px rgba(139,92,246,.65)}
+.btn-outline{
+  display:inline-flex;align-items:center;gap:.5rem;font-size:.88rem;font-weight:600;color:#fff;
+  padding:.72rem 1.6rem;border-radius:99px;background:var(--surface);border:1px solid var(--line);transition:all .2s;
+}
+.btn-outline:hover{border-color:var(--accent);background:var(--surface-hi);transform:translateY(-2px)}
+.hamburger{display:none;background:none;border:none;cursor:pointer;flex-direction:column;gap:6px;padding:.4rem}
+.hamburger span{display:block;width:24px;height:2px;background:#fff;border-radius:2px}
+.mobile-menu{
+  display:none;position:fixed;top:70px;left:0;right:0;z-index:99;flex-direction:column;gap:.3rem;
+  padding:1rem var(--pad) 1.5rem;background:rgba(6,11,22,.98);border-bottom:1px solid var(--line);
+}
+.mobile-menu.open{display:flex}
+.mobile-menu a{padding:.7rem .5rem;font-weight:500;color:var(--txt2);border-radius:10px}
+.mobile-menu a:hover{color:#fff;background:var(--surface-hi)}
+
+/* ═══ HERO ═══ */
+#home{
+  max-width:1180px;margin:0 auto;padding:130px var(--pad) 56px;
+  display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:3rem;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.6rem;padding:.4rem .95rem;margin-bottom:1.5rem;
+  background:var(--surface-hi);border:1px solid var(--line);border-radius:99px;
+  font-size:.74rem;font-weight:700;letter-spacing:.1em;color:#dbe9ff;
+}
+.hero-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(45,212,160,.2);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 8px rgba(45,212,160,0)}}
+.hero-name{
+  font-family:var(--head);font-weight:800;line-height:1.02;letter-spacing:-.045em;
+  font-size:clamp(3rem,7vw,5.6rem);color:#fff;margin-bottom:1.3rem;
+}
+.hero-name .accent{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero-title{font-size:1rem;font-weight:700;letter-spacing:.06em;color:var(--cyan);margin-bottom:1.2rem}
+.hero-desc{font-size:1.08rem;color:var(--txt2);max-width:560px;margin-bottom:2rem}
+.hero-btns{display:flex;gap:.9rem;flex-wrap:wrap}
+.hero-stats{
+  display:grid;grid-template-columns:repeat(3,auto);gap:2.5rem;width:fit-content;margin-top:2.8rem;
+  padding:1.1rem 1.6rem;background:rgba(8,16,30,.7);border:1px solid var(--line);border-radius:18px;
+}
+.stat-num{font-family:var(--head);font-size:2rem;font-weight:800;line-height:1;color:#fff}
+.stat-num b{color:var(--accent)}
+.stat-label{font-size:.76rem;color:var(--txt3);margin-top:.35rem}
+.hero-right{display:flex;justify-content:center}
+.avatar-wrap{position:relative;width:320px;height:320px}
+.avatar-glow{position:absolute;inset:-40px;border-radius:50%;background:radial-gradient(circle,rgba(94,160,255,.35),rgba(139,92,246,.2) 50%,transparent 72%);filter:blur(30px)}
+.avatar-ring{position:absolute;inset:-16px;border:1.5px dashed rgba(94,160,255,.35);border-radius:50%;animation:spin 30s linear infinite}
+.avatar-ring::after{content:'';position:absolute;top:-6px;left:50%;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 18px var(--cyan)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.avatar-circle{
+  position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;
+  background:linear-gradient(135deg,#13264a,#0a1428);border:3px solid rgba(255,255,255,.12);
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.7);
+}
+.avatar-circle img{width:100%;height:100%;object-fit:cover}
+.float-badge{
+  position:absolute;z-index:5;display:flex;align-items:center;gap:.5rem;white-space:nowrap;
+  padding:.5rem 1rem;border-radius:99px;font-size:.76rem;font-weight:600;color:#e8f1ff;
+  background:rgba(9,17,31,.9);border:1px solid var(--line);box-shadow:0 14px 30px rgba(0,0,0,.4);
+  animation:float 4s ease-in-out infinite;
+}
+.float-badge i{color:var(--accent)}
+.fb1{top:0;right:-40px}
+.fb2{bottom:50px;right:-60px;animation-delay:.8s}
+.fb3{bottom:-8px;left:-30px;animation-delay:1.6s}
+@keyframes float{50%{transform:translateY(-9px)}}
+
+/* tech marquee */
+.marquee-wrap{max-width:1180px;margin:0 auto;padding:0 var(--pad)}
+.marquee{
+  overflow:hidden;padding:.95rem 0;border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.03);
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+          mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+}
+.marquee-track{display:flex;gap:3rem;width:max-content;animation:scroll 40s linear infinite}
+.marquee-track span{font-size:.85rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--txt3);display:flex;align-items:center;gap:3rem}
+.marquee-track span::after{content:'◆';color:var(--accent);font-size:.5rem}
+@keyframes scroll{to{transform:translateX(-50%)}}
+
+/* ═══ ABOUT ═══ */
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:3rem;align-items:start}
+.about-text p{color:var(--txt2);margin-bottom:1.1rem;font-size:1.04rem}
+.about-text strong{color:#fff}
+.about-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.6rem;list-style:none}
+.about-list li{font-size:.78rem;font-weight:500;padding:.3rem .9rem;border-radius:99px;background:var(--surface);border:1px solid var(--line);color:#d8e7ff}
+.about-cards{display:grid;gap:1rem}
+.about-card{display:flex;align-items:center;gap:1rem;padding:1.25rem 1.4rem}
+.about-card-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)}
+.about-card-val{font-size:.95rem;font-weight:600;color:#fff}
+
+/* ═══ SKILLS ═══ */
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.skill-card{padding:1.6rem;display:flex;flex-direction:column;gap:1.2rem}
+.skill-card-head{display:flex;align-items:center;gap:1rem}
+.skill-card-title{font-family:var(--head);font-size:1.08rem;font-weight:700;color:#fff}
+.skill-card .tags{align-content:flex-start}
+.skill-tag{font-size:.76rem;font-weight:500;padding:.25rem .8rem;border-radius:99px;background:var(--surface);border:1px solid var(--line);color:var(--txt2)}
+
+/* ═══ TIMELINE ═══ */
+.timeline{position:relative;display:grid;gap:1.6rem}
+.timeline::before{content:'';position:absolute;left:23px;top:10px;bottom:10px;width:2px;background:linear-gradient(180deg,var(--accent),var(--accent2),transparent)}
+.tl-item{display:grid;grid-template-columns:48px 1fr;gap:1.5rem}
+.tl-dot{
+  position:relative;z-index:1;width:48px;height:48px;border-radius:50%;display:grid;place-items:center;
+  background:var(--bg-soft);border:2px solid var(--accent);color:var(--accent);box-shadow:0 0 0 6px rgba(94,160,255,.1);
+}
+.tl-card{padding:1.6rem 1.8rem}
+.tl-header{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:.6rem}
+.tl-role{font-family:var(--head);font-size:1.1rem;font-weight:700;color:#fff}
+.tl-date{font-size:.74rem;font-weight:700;padding:.28rem .85rem;border-radius:99px;background:rgba(94,160,255,.12);color:#cfe1ff;border:1px solid rgba(94,160,255,.2)}
+.tl-company{color:var(--txt3);font-size:.9rem;margin:.3rem 0 1rem}
+.tl-list{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.55rem 2rem}
+.tl-list li{position:relative;padding-left:1.3rem;font-size:.9rem;color:var(--txt2)}
+.tl-list li::before{content:'▹';position:absolute;left:0;color:var(--accent)}
+.tl-card.single .tl-list{grid-template-columns:1fr}
+
+/* ═══ PROJECT CARDS (uniform) ═══ */
+.projects-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;align-items:stretch}
+.project-card{padding:1.7rem;display:flex;flex-direction:column;overflow:hidden}
+.project-card::before{content:'';position:absolute;inset:0 0 auto 0;height:3px;background:var(--grad)}
+.project-top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;margin-bottom:1rem}
+.project-num{font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.badge{font-size:.62rem;font-weight:700;letter-spacing:.08em;padding:.2rem .6rem;border-radius:99px;background:rgba(45,212,160,.12);color:#8cf0cf;border:1px solid rgba(45,212,160,.25);white-space:nowrap}
+.project-name{font-family:var(--head);font-size:1.12rem;font-weight:700;line-height:1.3;letter-spacing:-.015em;color:#fff;margin-bottom:.7rem;min-height:2.9em}
+.project-desc{font-size:.88rem;color:var(--txt2);line-height:1.65;margin-bottom:1.1rem;display:-webkit-box;-webkit-line-clamp:5;-webkit-box-orient:vertical;overflow:hidden;min-height:8.25em}
+.project-card .tags{margin-bottom:1.2rem}
+.project-card .tag{font-size:.7rem}
+.subdeliv-toggle{
+  margin-top:auto;display:flex;align-items:center;gap:.5rem;width:100%;cursor:pointer;
+  font-family:var(--body);font-size:.8rem;font-weight:600;color:#dbeafe;
+  padding:.6rem .85rem;border-radius:10px;background:rgba(94,160,255,.08);border:1px solid rgba(94,160,255,.16);transition:background .2s;
+}
+.subdeliv-toggle:hover{background:rgba(94,160,255,.16)}
+.subdeliv-toggle i{font-size:.65rem;transition:transform .2s}
+.subdeliv-toggle[aria-expanded="true"] i{transform:rotate(90deg)}
+.subdeliv-list{display:none;flex-direction:column;gap:.85rem;margin-top:1rem}
+.subdeliv-list.open{display:flex}
+.subdeliv-item{border-left:2px solid var(--accent);padding-left:.85rem}
+.subdeliv-title{font-family:var(--head);font-size:.85rem;font-weight:700;color:#fff;margin-bottom:.15rem}
+.subdeliv-desc{font-size:.8rem;color:var(--txt2);line-height:1.55}
+.projects-grid .project-card:last-child:nth-child(3n+1){grid-column:1/-1}
+.projects-grid .project-card:last-child:nth-child(3n+1) .project-desc{min-height:0;max-width:760px;-webkit-line-clamp:unset}
+.projects-grid .project-card:last-child:nth-child(3n+1) .project-name{min-height:0}
+
+/* privacy note */
+.privacy-note{
+  display:flex;gap:.9rem;align-items:flex-start;padding:1.1rem 1.3rem;margin-bottom:2rem;border-radius:16px;
+  background:linear-gradient(135deg,rgba(94,160,255,.1),rgba(139,92,246,.08));border:1px solid rgba(94,160,255,.2);
+  color:var(--txt2);font-size:.86rem;line-height:1.6;
+}
+.privacy-note i{color:var(--accent);margin-top:.2rem}
+.privacy-note strong{color:#fff}
+
+/* ═══ CASE STUDIES (uniform) ═══ */
+.case-study-grid{display:grid;gap:1.6rem}
+.premium-case{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);overflow:hidden;align-items:stretch;
+}
+.premium-case:hover{transform:none}
+.premium-case:nth-child(even) .case-visual{order:2}
+.case-visual{
+  position:relative;min-height:380px;height:100%;cursor:zoom-in;overflow:hidden;
+  background:
+    radial-gradient(circle at 14% 10%,rgba(34,211,238,.18),transparent 30%),
+    radial-gradient(circle at 86% 12%,rgba(139,92,246,.26),transparent 32%),
+    linear-gradient(145deg,#061120,#0b1c34 55%,#0a1830);
+}
+.case-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:.9rem;z-index:2;transition:transform .45s}
+.case-visual:hover img{transform:scale(1.03)}
+.case-visual-overlay{position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(to top,rgba(5,14,30,.65),transparent 35%)}
+.case-visual-badge,.case-zoom-hint{
+  position:absolute;bottom:.9rem;padding:.35rem .7rem;border-radius:99px;font-size:.66rem;font-weight:700;color:#fff;
+  background:rgba(5,14,30,.7);border:1px solid rgba(255,255,255,.15);backdrop-filter:blur(8px)
+}
+.case-visual-badge{left:.9rem}
+.case-zoom-hint{right:.9rem;opacity:.85}
+.case-image-placeholder{position:absolute;inset:0;z-index:1;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;color:rgba(255,255,255,.9)}
+.case-visual.missing-image{cursor:default}
+.case-visual.missing-image .case-image-placeholder{display:flex}
+.case-visual.missing-image .case-visual-overlay,.case-visual.missing-image .case-zoom-hint{display:none}
+.placeholder-icon{width:60px;height:60px;border-radius:18px;display:grid;place-items:center;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);font-size:1.3rem;margin-bottom:.9rem}
+.placeholder-title{font-family:var(--head);font-weight:700;font-size:.95rem}
+.placeholder-sub{margin-top:.4rem;font-size:.62rem;color:rgba(255,255,255,.55);overflow-wrap:anywhere;max-width:300px}
+.case-content{padding:1.9rem 2rem;display:flex;flex-direction:column;min-width:0}
+.case-top{display:grid;grid-template-columns:auto minmax(0,1fr) auto;gap:.9rem;align-items:start;margin-bottom:.9rem}
+.case-kicker{font-size:.66rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:.25rem}
+.case-title{font-family:var(--head);font-size:1.18rem;font-weight:700;line-height:1.28;letter-spacing:-.02em;color:#fff}
+.case-top .badge{background:rgba(94,160,255,.1);color:#cfe1ff;border-color:rgba(94,160,255,.2)}
+.case-desc{font-size:.88rem;color:var(--txt2);line-height:1.65;margin-bottom:1rem}
+.architecture-flow{display:flex;align-items:center;flex-wrap:wrap;gap:.4rem;padding:.7rem .75rem;margin-bottom:1rem;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--line)}
+.flow-node{font-size:.68rem;font-weight:600;padding:.25rem .6rem;border-radius:8px;color:#eaf2ff;background:rgba(255,255,255,.06);border:1px solid var(--line)}
+.flow-arrow{color:var(--accent);font-size:.65rem}
+.case-meta{display:grid;gap:.5rem;margin-bottom:1rem}
+.case-meta-row{display:grid;grid-template-columns:84px 1fr;gap:.8rem;padding:.55rem .75rem;border-radius:10px;background:rgba(255,255,255,.035);border-left:2px solid var(--accent)}
+.case-meta-label{font-size:.64rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding-top:.12rem}
+.case-meta-value{font-size:.8rem;color:#dbe6f7;line-height:1.5}
+.case-content .tags{margin-top:auto;padding-top:.2rem}
+.case-content{justify-content:flex-start}
+.case-title,.case-desc,.case-meta-value{overflow-wrap:anywhere}
+.case-content .tag{font-size:.68rem}
+
+/* ═══ LABS ═══ */
+.lab-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem}
+.lab-card{padding:1.5rem;display:flex;flex-direction:column;gap:.7rem}
+.lab-label{align-self:flex-start;display:inline-flex;align-items:center;gap:.4rem;font-size:.66rem;font-weight:700;letter-spacing:.06em;padding:.25rem .65rem;border-radius:99px;background:rgba(139,92,246,.14);color:#d8ccff;border:1px solid rgba(139,92,246,.25)}
+.lab-title{font-family:var(--head);font-size:1rem;font-weight:700;color:#fff;line-height:1.3}
+.lab-desc{font-size:.83rem;color:var(--txt2);line-height:1.6}
+
+/* ═══ INDEPENDENT APPS (uniform) ═══ */
+.apps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem;align-items:stretch}
+.app-card{padding:1.6rem;display:flex;flex-direction:column}
+.app-card-head{display:flex;align-items:center;gap:.9rem;margin-bottom:1rem}
+.app-name{font-family:var(--head);font-size:1.02rem;font-weight:700;line-height:1.3;color:#fff}
+.app-status{display:inline-block;margin-top:.25rem;font-size:.64rem;font-weight:700;letter-spacing:.04em;padding:.15rem .6rem;border-radius:99px}
+.app-status.live{background:rgba(45,212,160,.12);color:#8cf0cf;border:1px solid rgba(45,212,160,.25)}
+.app-status.dev{background:rgba(94,160,255,.12);color:#cfe1ff;border:1px solid rgba(94,160,255,.22)}
+.app-desc{font-size:.85rem;color:var(--txt2);line-height:1.65;margin-bottom:1rem;min-height:10.5em}
+.app-desc b{color:#fff;display:block;margin-top:.7rem;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase}
+.app-features{font-size:.8rem;color:var(--txt2)}
+.app-card .tags{margin-bottom:1.1rem}
+.app-link{display:inline-flex;align-items:center;gap:.5rem;font-size:.82rem;font-weight:600;color:var(--accent);margin-bottom:1rem}
+.app-link:hover{color:#fff}
+.app-link.placeholder{visibility:hidden}
+
+/* screenshot tiles — identical on every card */
+.app-screens{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:auto}
+.gallery-shot{position:relative;aspect-ratio:9/16;border-radius:10px;overflow:hidden;cursor:pointer;background:var(--surface);border:1px solid var(--line);transition:transform .2s,border-color .2s}
+.gallery-shot:hover{transform:scale(1.03);border-color:var(--accent)}
+.gallery-shot img{width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .3s}
+.gallery-shot:hover img{transform:scale(1.07)}
+.gallery-shot:nth-child(n+4){display:none}
+.more-overlay{position:absolute;inset:0;z-index:1;display:grid;place-items:center;background:rgba(6,11,22,.62);backdrop-filter:blur(2px);color:#fff;font-weight:700;font-size:1.1rem}
+
+.otherwork-card{margin-top:3rem;padding:1.5rem 1.8rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.otherwork-left{display:flex;align-items:center;gap:1rem}
+.otherwork-title{font-family:var(--head);font-weight:700;font-size:1rem;color:#fff}
+.otherwork-desc{font-size:.84rem;color:var(--txt2);margin-top:.15rem}
+.otherwork-card .app-link{margin-bottom:0}
+
+/* ═══ LIGHTBOX ═══ */
+.lightbox-overlay{display:none;position:fixed;inset:0;z-index:999;align-items:center;justify-content:center;padding:5vh 5vw;background:rgba(3,8,18,.94);backdrop-filter:blur(8px);cursor:zoom-out}
+.lightbox-overlay.open{display:flex}
+.lightbox-overlay img{max-width:min(94vw,1500px);max-height:88vh;object-fit:contain;background:#fff;padding:.4rem;border-radius:14px;box-shadow:0 30px 80px rgba(0,0,0,.6);cursor:default}
+.lightbox-close,.lightbox-nav{position:absolute;border:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.92);color:#0b1220;cursor:pointer;transition:transform .2s;z-index:3}
+.lightbox-close{top:22px;right:26px;width:42px;height:42px}
+.lightbox-nav{top:50%;transform:translateY(-50%);width:48px;height:48px}
+.lightbox-nav.prev{left:20px}.lightbox-nav.next{right:20px}
+.lightbox-close:hover{transform:scale(1.08)}
+.lightbox-nav:hover{transform:translateY(-50%) scale(1.08)}
+.lightbox-counter{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);padding:.3rem .95rem;border-radius:99px;font-size:.76rem;font-weight:700;background:rgba(255,255,255,.92);color:#0b1220}
+
+/* ═══ CREDENTIALS ═══ */
+.edu-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.4rem}
+.edu-card{padding:1.6rem;display:flex;gap:1.1rem;align-items:center}
+.edu-title{font-family:var(--head);font-weight:700;color:#fff}
+.edu-org{font-size:.86rem;color:var(--txt2)}
+.edu-date{display:inline-block;margin-top:.5rem;font-size:.72rem;font-weight:700;color:var(--accent)}
+
+/* ═══ CONTACT ═══ */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+.contact-intro{color:var(--txt2);margin-bottom:1.4rem;font-size:1.04rem}
+.contact-info{display:grid;gap:.9rem}
+.contact-card{display:flex;align-items:center;gap:1rem;padding:1rem 1.3rem}
+.contact-label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--txt3)}
+.contact-val{font-weight:500;color:#fff;overflow-wrap:anywhere}
+.contact-val a:hover{color:var(--accent)}
+.contact-form{display:flex;flex-direction:column;gap:1.1rem;padding:1.8rem}
+.form-group{display:flex;flex-direction:column;gap:.4rem}
+.form-group label{font-size:.7rem;font-weight:700;letter-spacing:.1em;color:var(--txt3)}
+.form-group input,.form-group textarea{
+  font-family:var(--body);font-size:.95rem;color:#fff;padding:.8rem 1rem;border-radius:12px;outline:none;
+  background:rgba(255,255,255,.04);border:1px solid var(--line);transition:border-color .2s,background .2s;
+}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--accent);background:rgba(94,160,255,.06)}
+.form-submit{align-self:flex-start;cursor:pointer;border:none;font-family:var(--body)}
+#form-status{font-size:.82rem;color:var(--green);display:none}
+
+/* ═══ FOOTER ═══ */
+footer{border-top:1px solid var(--line);background:rgba(5,9,18,.6)}
+.footer-container{max-width:1180px;margin:0 auto;padding:2rem var(--pad);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:var(--head);font-weight:800;letter-spacing:.1em;color:#fff;font-size:.9rem}
+.footer-copy{font-size:.82rem;color:var(--txt3)}
+.social-links{display:flex;gap:.7rem}
+.social-links a{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;color:var(--txt2);border:1px solid var(--line);transition:all .2s}
+.social-links a:hover{color:#fff;border-color:var(--accent);background:rgba(94,160,255,.12);transform:translateY(-2px)}
+
+/* ═══ ANIMATION ═══ */
+.js .fade-in{opacity:0;transform:translateY(22px);transition:opacity .6s ease,transform .6s ease}
+.js .fade-in.visible{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .js .fade-in{opacity:1;transform:none}
 }
 
-.nav-container {
-  max-width: 1100px;  /* Match your section width */
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 5vw;
-  height: 70px;
-  width: 100%;
+/* ═══ RESPONSIVE ═══ */
+@media (max-width:1060px){
+  .projects-grid,.apps-grid,.skills-grid{grid-template-columns:repeat(2,1fr)}
+  .projects-grid .project-card:last-child:nth-child(3n+1){grid-column:auto}
+  .projects-grid .project-card:last-child:nth-child(2n+1){grid-column:1/-1}
+  .lab-grid{grid-template-columns:repeat(2,1fr)}
+  .premium-case{grid-template-columns:1fr}
+  .premium-case:nth-child(even) .case-visual{order:0}
+  .case-visual{height:auto;min-height:0;aspect-ratio:16/9}
 }
-
-.nav-logo {
-  font-family: var(--mono);
-  font-size: 1rem;
-  font-weight: 700;
-  color: var(--accent);
+@media (max-width:860px){
+  .nav-links,.nav-cta{display:none}
+  .hamburger{display:flex}
+  #home{grid-template-columns:1fr;text-align:center;padding-top:100px;gap:2.2rem;min-height:auto}
+  .hero-right{order:-1}
+  .avatar-wrap{width:230px;height:230px}
+  .fb1{right:-20px}.fb2{right:-30px}.fb3{left:-20px}
+  .hero-desc{margin-inline:auto}
+  .hero-btns{justify-content:center}
+  .hero-stats{margin-inline:auto}
+  .about-grid,.contact-grid{grid-template-columns:1fr}
+  .tl-list{grid-template-columns:1fr}
+  .edu-grid{grid-template-columns:1fr}
+  .footer-container{flex-direction:column;text-align:center}
 }
-
-.nav-links { 
-  display: flex; 
-  gap: 2rem; 
-  list-style: none; 
+@media (max-width:640px){
+  .section-inner{padding:72px var(--pad)}
+  .projects-grid,.apps-grid,.skills-grid,.lab-grid{grid-template-columns:1fr}
+  .projects-grid .project-card:last-child:nth-child(2n+1){grid-column:auto}
+  .project-name,.project-desc,.app-desc{min-height:0}
+  .project-desc{-webkit-line-clamp:unset}
+  .hero-stats{gap:1.2rem;padding:.9rem 1rem;width:100%;justify-content:space-around}
+  .stat-num{font-size:1.5rem}
+  .stat-label{font-size:.66rem}
+  .float-badge{font-size:.64rem;padding:.35rem .7rem}
+  .tl-item{grid-template-columns:40px 1fr;gap:1rem}
+  .tl-dot{width:40px;height:40px}
+  .timeline::before{left:19px}
+  .tl-card{padding:1.3rem}
+  .case-content{padding:1.3rem}
+  .case-meta-row{grid-template-columns:1fr;gap:.2rem}
+  .case-zoom-hint{display:none}
+  .case-visual{aspect-ratio:4/3}
+  .case-top{grid-template-columns:auto minmax(0,1fr)}
+  .case-top .badge{grid-column:1/-1;justify-self:start;order:3}
+  .architecture-flow{gap:.3rem}
+  .flow-node{font-size:.64rem;padding:.2rem .45rem}
+  .section-inner{padding:52px var(--pad)}
+  .sub-block{margin-top:3rem}
+  #home{padding-top:100px}
+  .lightbox-nav{width:38px;height:38px}
+  .lightbox-nav.prev{left:8px}.lightbox-nav.next{right:8px}
 }
-
-.nav-links a {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 500;
-  color: var(--txt2);
-  transition: color .2s;
-}
-
-.nav-links a:hover, 
-.nav-links a.active { 
-  color: var(--accent); 
-}
-
-.nav-cta {
-  font-family: var(--mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.5rem 1.2rem;
-  background: var(--accent);
-  color: white;
-  border-radius: 40px;
-  transition: all .2s;
-}
-
-.nav-cta:hover { 
-  background: #005fcc; 
-  transform: translateY(-1px); 
-}
-
-.hamburger {
-  display: none;
-  cursor: pointer;
-  background: none;
-  border: none;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.hamburger span { 
-  display: block; 
-  width: 24px; 
-  height: 2px; 
-  background: var(--txt); 
-  border-radius: 2px; 
-}
-
-    /* ─── HERO ─── */
-    /* ─── HERO ─── */
-#home {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
-  gap: 2rem;
-  max-width: 1100px;  /* Match other sections */
-  margin: 0 auto;      /* Center the section */
-  padding: 70px 5vw 0 5vw;
-  position: relative;
-  z-index: 1;
-}
-    .hero-left { max-width: 600px; }
-    .hero-right { 
-      display: flex; 
-      justify-content: flex-end;  /* Pushes avatar to the right */
-      align-items: center; 
-    }
-    .hero-name {
-      font-family: var(--head);
-      font-size: clamp(3rem, 6vw, 5rem);
-      font-weight: 800;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.8rem;
-      color: var(--txt);
-    }
-    .hero-name .accent { color: var(--accent); }
-    .hero-title {
-      font-family: var(--mono);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--accent2);
-      letter-spacing: 0.02em;
-      margin-bottom: 1.2rem;
-    }
-    .hero-desc {
-      font-size: 1rem;
-      color: var(--txt2);
-      max-width: 480px;
-      margin-bottom: 2rem;
-    }
-    .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .btn-primary {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0.75rem 1.8rem;
-      background: var(--accent);
-      color: white;
-      border-radius: 40px;
-      transition: all .2s;
-    }
-    .btn-primary:hover { background: #005fcc; transform: translateY(-2px); }
-    .btn-outline {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      font-weight: 500;
-      padding: 0.75rem 1.8rem;
-      border: 1px solid var(--line);
-      background: white;
-      color: var(--txt);
-      border-radius: 40px;
-      transition: all .2s;
-    }
-    .btn-outline:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-    .hero-stats {
-      display: flex; gap: 2.5rem;
-      margin-top: 3rem;
-    }
-    .stat-num {
-      font-family: var(--head);
-      font-size: 2rem;
-      font-weight: 800;
-      color: var(--accent);
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.8rem;
-      color: var(--txt2);
-      margin-top: 0.2rem;
-    }
-
-    /* ─── AVATAR ─── */
-    .avatar-wrap { 
-      position: relative; 
-      width: 280px; 
-      height: 280px; 
-    }
-    .avatar-ring { 
-      position: absolute; 
-      inset: -12px; 
-      border: 2px solid rgba(0,119,255,0.2); 
-      border-radius: 50%; 
-      animation: spin 20s linear infinite; 
-    }
-    .avatar-ring::after { 
-      content: ''; 
-      position: absolute; 
-      top: -6px; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 10px; 
-      height: 10px; 
-      background: var(--accent); 
-      border-radius: 50%; 
-    }
-    @keyframes spin { 
-      to { transform: rotate(360deg); } 
-    }
-    .avatar-circle {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      overflow: hidden;
-      background: linear-gradient(135deg, #e0e7ff, #ffffff);
-      border: 3px solid white;
-      box-shadow: 0 20px 35px -15px rgba(0,0,0,0.2);
-    }
-    .avatar-circle img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center center;
-      display: block;
-    }
-    .float-badge {
-      position: absolute;
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 40px;
-      padding: 0.4rem 1rem;
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--txt2);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-      white-space: nowrap;
-      animation: float 3s ease-in-out infinite;
-      z-index: 10;
-    }
-    .float-badge i { color: var(--accent); margin-right: 0.4rem; }
-    .float-badge:nth-child(3) { top: -15px; right: -30px; animation-delay: 0s; }
-    .float-badge:nth-child(4) { bottom: 35px; right: -50px; animation-delay: 0.6s; }
-    .float-badge:nth-child(5) { bottom: -15px; left: -30px; animation-delay: 1.2s; }
-    @keyframes float { 
-      0%,100% { transform: translateY(0); } 
-      50% { transform: translateY(-8px); } 
-    }
-
-    /* ─── SECTIONS ─── */
-    section { position: relative; z-index: 1; }
-    .section-inner { max-width: 1100px; margin: 0 auto; padding: 80px 5vw; }
-    .section-title {
-      font-family: var(--head);
-      font-size: clamp(1.8rem, 3vw, 2.6rem);
-      font-weight: 700;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.8rem;
-      color: var(--txt);
-    }
-    .divider {
-      width: 60px; height: 3px;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 99px;
-      margin: 1rem 0 2rem;
-    }
-
-    /* ─── ABOUT, SKILLS, EXPERIENCE, PROJECTS, EDUCATION, CONTACT, FOOTER ─── */
-    /* (Keeping your existing styles for these sections - they work fine) */
-    #about { background: var(--bg2); }
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: start;
-    }
-    .about-text p { color: var(--txt2); margin-bottom: 1rem; }
-    .about-list { list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
-    .about-list li {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.3rem 0.9rem;
-      border: 1px solid var(--line);
-      border-radius: 40px;
-      color: var(--accent);
-      background: white;
-    }
-    .about-info { display: grid; gap: 1rem; }
-    .info-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.2rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-      transition: all .2s;
-    }
-    .info-card:hover { border-color: var(--accent); box-shadow: 0 4px 12px rgba(0,0,0,0.03); }
-    .info-icon {
-      width: 42px; height: 42px;
-      background: rgba(0,119,255,0.08);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-    }
-    .info-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 600; color: var(--txt2); letter-spacing: 0.05em; }
-    .info-val { font-size: 0.9rem; font-weight: 500; }
-    .info-val a { color: inherit; }
-    .info-val a:hover { color: var(--accent); }
-
-    #skills { background: var(--bg); }
-    .skills-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.5rem;
-    }
-    .skill-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: all .2s;
-    }
-    .skill-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: 0 12px 24px -12px rgba(0,0,0,0.05); }
-    .skill-card-head { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-    .skill-icon {
-      width: 44px; height: 44px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
-    }
-    .skill-icon.blue  { background: rgba(0,119,255,0.1); color: var(--accent); }
-    .skill-icon.purple{ background: rgba(99,102,241,0.1); color: var(--accent2); }
-    .skill-icon.green { background: rgba(16,185,129,0.1); color: var(--accent3); }
-    .skill-card-title { font-family: var(--head); font-size: 1.1rem; font-weight: 700; }
-    .skill-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .skill-tag {
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.2rem 0.8rem;
-      border-radius: 40px;
-      background: var(--bg3);
-      color: var(--txt2);
-      border: none;
-    }
-
-    #experience { background: var(--bg2); }
-    .timeline { position: relative; padding-left: 1rem; }
-    .timeline::before { content:''; position:absolute; left: 28px; top: 8px; bottom: 8px; width: 2px; background: var(--line); }
-    .tl-item {
-      display: grid;
-      grid-template-columns: 56px 1fr;
-      gap: 1.5rem;
-      margin-bottom: 2.5rem;
-    }
-    .tl-dot {
-      width: 44px; height: 44px;
-      background: white;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-    }
-    .tl-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: all .2s;
-    }
-    .tl-card:hover { border-color: var(--accent); }
-    .tl-header { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .tl-role { font-family: var(--head); font-size: 1rem; font-weight: 700; }
-    .tl-date {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: var(--accent);
-      background: rgba(0,119,255,0.08);
-      padding: 0.2rem 0.7rem;
-      border-radius: 40px;
-    }
-    .tl-company { color: var(--txt2); font-size: 0.85rem; margin-bottom: 0.8rem; }
-    .tl-list { list-style: none; margin-top: 0.5rem; }
-    .tl-list li {
-      font-size: 0.85rem;
-      color: var(--txt2);
-      margin-bottom: 0.4rem;
-      padding-left: 1.2rem;
-      position: relative;
-    }
-    .tl-list li::before { content:'▹'; position:absolute; left:0; color: var(--accent); }
-
-    #projects { background: var(--bg); }
-    .projects-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-    }
-    .project-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-      transition: all .2s;
-    }
-    .project-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .project-num { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--accent); letter-spacing: 0.05em; }
-    .project-name { font-family: var(--head); font-size: 1.1rem; font-weight: 700; margin: 0.5rem 0; }
-    .project-desc { font-size: 0.85rem; color: var(--txt2); margin-bottom: 1rem; }
-    .project-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .project-tag {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      font-weight: 500;
-      padding: 0.2rem 0.7rem;
-      border-radius: 40px;
-      background: rgba(0,119,255,0.08);
-      color: var(--accent);
-    }
-
-    #education { background: var(--bg2); }
-    .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
-    .edu-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1.5rem;
-    }
-    .edu-head { display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem; }
-    .edu-badge {
-      width: 48px; height: 48px;
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.3rem;
-    }
-    .edu-badge.deg { background: rgba(16,185,129,0.1); color: var(--accent3); }
-    .edu-badge.cert { background: rgba(99,102,241,0.1); color: var(--accent2); }
-    .edu-title { font-family: var(--head); font-weight: 700; }
-    .edu-org { font-size: 0.8rem; color: var(--txt2); }
-    .edu-date { display: inline-block; margin-top: 0.8rem; font-size: 0.7rem; font-weight: 500; color: var(--txt2); }
-
-    #contact { background: var(--bg); }
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
-    .contact-info { display: flex; flex-direction: column; gap: 1rem; }
-    .contact-card {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      padding: 1rem 1.5rem;
-      display: flex; align-items: center; gap: 1rem;
-    }
-    .contact-icon {
-      width: 42px; height: 42px;
-      background: rgba(0,119,255,0.08);
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--accent);
-    }
-    .contact-label { font-size: 0.7rem; text-transform: uppercase; font-weight: 600; color: var(--txt2); }
-    .contact-val { font-weight: 500; }
-    .contact-val a { color: inherit; }
-    .contact-form { display: flex; flex-direction: column; gap: 1rem; }
-    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-    .form-group label { font-family: var(--mono); font-size: 0.7rem; font-weight: 600; color: var(--txt2); letter-spacing: 0.05em; }
-    .form-group input, .form-group textarea {
-      background: white;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 0.75rem 1rem;
-      font-family: var(--body);
-      font-size: 0.9rem;
-      outline: none;
-      transition: border .2s;
-    }
-    .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
-    .form-submit {
-      font-family: var(--mono);
-      font-size: 0.85rem;
-      font-weight: 600;
-      padding: 0.75rem 1.8rem;
-      background: var(--accent);
-      color: white;
-      border: none;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: all .2s;
-      align-self: flex-start;
-    }
-    .form-submit:hover { background: #005fcc; transform: translateY(-2px); }
-
-/* ─── FOOTER ─── */
-/* ─── FOOTER ─── */
-footer {
-  background: var(--bg2);
-  border-top: 1px solid var(--line);
-  margin-top: 0;
-  width: 100%;
-}
-
-.footer-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 2rem 5vw;
-  width: 100%;
-}
-
-.footer-logo { 
-  font-family: var(--mono); 
-  font-weight: 700; 
-  color: var(--accent); 
-}
-
-.footer-copy { 
-  font-size: 0.8rem; 
-  color: var(--txt2); 
-}
-
-.social-links { 
-  display: flex; 
-  gap: 0.8rem; 
-}
-
-.social-links a {
-  width: 38px;
-  height: 38px;
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--txt2);
-  transition: all .2s;
-}
-
-.social-links a:hover { 
-  border-color: var(--accent); 
-  color: var(--accent); 
-  background: white; 
-}
-
-/* Responsive footer */
-@media (max-width: 860px) {
-  .footer-container {
-    flex-direction: column;
-    text-align: center;
-    gap: 1rem;
-    padding: 2rem 5vw;
-  }
-}
-
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 70px; left: 0; right: 0;
-      background: white;
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--line);
-      flex-direction: column;
-      padding: 1.5rem 2rem;
-      gap: 1.2rem;
-      z-index: 99;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
-    }
-    .mobile-menu.open { display: flex; }
-    .mobile-menu a { font-family: var(--mono); font-weight: 500; color: var(--txt2); }
-    .mobile-menu a:hover { color: var(--accent); }
-
-    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
-    .fade-in.visible { opacity: 1; transform: translateY(0); }
-
-    /* ─── RESPONSIVE - AVATAR ON RIGHT ON DESKTOP, ON TOP ON MOBILE ─── */
-    @media (max-width: 860px) {
-      #home { 
-        display: flex;
-        flex-direction: column;
-        padding-top: 100px; 
-        text-align: center; 
-        gap: 0.5rem;
-      }
-      
-      /* Avatar goes to the TOP on mobile */
-      .hero-right { 
-        order: -1;  /* Puts it first */
-        display: flex !important; 
-        justify-content: center; 
-        margin-bottom: 2rem;
-        width: 100%;
-      }
-      
-      .hero-left { 
-        order: 0;
-        max-width: 100%;
-        margin: 0 auto;
-      }
-      
-      /* Make avatar smaller on mobile */
-      .avatar-wrap { 
-        width: 220px; 
-        height: 220px; 
-        margin: 0 auto;
-      }
-      
-      .avatar-circle {
-        width: 220px;
-        height: 220px;
-      }
-      
-      .float-badge {
-        font-size: 0.6rem;
-        padding: 0.3rem 0.7rem;
-      }
-      
-      .float-badge:nth-child(3) { 
-        top: -10px; 
-        right: -20px; 
-      }
-      
-      .float-badge:nth-child(4) { 
-        bottom: 25px; 
-        right: -35px; 
-      }
-      
-      .float-badge:nth-child(5) { 
-        bottom: -10px; 
-        left: -20px; 
-      }
-      
-      .hero-desc { 
-        margin-left: auto; 
-        margin-right: auto; 
-      }
-      
-      .hero-btns, 
-      .hero-stats { 
-        justify-content: center; 
-      }
-      
-      .about-grid, 
-      .contact-grid { 
-        grid-template-columns: 1fr; 
-      }
-      
-      .nav-links, 
-      .nav-cta { 
-        display: none; 
-      }
-      
-      .hamburger { 
-        display: flex; 
-      }
-    }
-
-    @media (max-width: 480px) {
-      .avatar-wrap { 
-        width: 180px; 
-        height: 180px; 
-      }
-      
-      .avatar-circle {
-        width: 180px;
-        height: 180px;
-      }
-      
-      .float-badge {
-        font-size: 0.55rem;
-        padding: 0.2rem 0.6rem;
-      }
-      
-      .float-badge:nth-child(3) { 
-        top: -8px; 
-        right: -15px; 
-      }
-      
-      .float-badge:nth-child(4) { 
-        bottom: 20px; 
-        right: -25px; 
-      }
-      
-      .float-badge:nth-child(5) { 
-        bottom: -8px; 
-        left: -15px; 
-      }
-    }
-  </style>
+</style>
 </head>
 <body>
 
 <nav>
   <div class="nav-container">
-    <div class="nav-logo">MUHAMMAD MEHRAN</div>
+    <a href="#home" class="nav-logo">MUHAMMAD <span>MEHRAN</span></a>
     <ul class="nav-links">
       <li><a href="#home">Home</a></li>
       <li><a href="#about">About</a></li>
@@ -749,13 +491,10 @@ footer {
       <li><a href="#education">Education</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
-    <a class="nav-cta" href="mailto:mehranmehroo44@gmail.com">Hire Me</a>
-    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()">
-      <span></span><span></span><span></span>
-    </button>
+    <a class="nav-cta" href="mailto:m.mehran.thana@gmail.com">Hire Me</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
-
 <div class="mobile-menu" id="mobileMenu">
   <a href="#home" onclick="closeMenu()">Home</a>
   <a href="#about" onclick="closeMenu()">About</a>
@@ -766,195 +505,622 @@ footer {
   <a href="#contact" onclick="closeMenu()">Contact</a>
 </div>
 
+<!-- ═══ HERO ═══ -->
 <section id="home">
   <div class="hero-left">
+    <div class="hero-badge"><span class="dot"></span> OPEN TO NEW OPPORTUNITIES</div>
     <h1 class="hero-name">Muhammad<br><span class="accent">Mehran</span></h1>
-    <p class="hero-title">DYNAMICS 365 CRM DEVELOPER &amp; CONSULTANT</p>
-    <p class="hero-desc">Designing and delivering scalable CRM &amp; Power Platform solutions with deep expertise in C#, Power Automate, Azure, and Microsoft Fabric.</p>
+    <p class="hero-title">MICROSOFT DYNAMICS 365 CE/CRM TECHNICAL CONSULTANT</p>
+    <p class="hero-desc">Designing scalable Dynamics 365, Dataverse and Power Platform solutions with a focus on C# engineering, enterprise integration, Microsoft Fabric, automation, and AI-enabled experiences.</p>
     <div class="hero-btns">
-      <a class="btn-primary" href="#contact">Get in Touch</a>
+      <a class="btn-primary" href="#contact">Get in Touch <i class="fas fa-arrow-right"></i></a>
       <a class="btn-outline" href="#projects">View Projects</a>
     </div>
     <div class="hero-stats">
-      <div><div class="stat-num">2+</div><div class="stat-label">Year Senior Role</div></div>
-      <div><div class="stat-num">5+</div><div class="stat-label">Projects Delivered</div></div>
-      <div><div class="stat-num">4</div><div class="stat-label">Team Members Led</div></div>
+      <div><div class="stat-num"><span data-count="2">2</span><b>+</b></div><div class="stat-label">Years of Dynamics Experience</div></div>
+      <div><div class="stat-num"><span data-count="1">1</span><b>+</b></div><div class="stat-label">Years in Senior Role</div></div>
+      <div><div class="stat-num"><span data-count="8">8</span><b>+</b></div><div class="stat-label">Architecture Case Studies</div></div>
+      <!-- <div><div class="stat-num"><span data-count="4">4</span></div><div class="stat-label">Team Members Led</div></div> -->
     </div>
   </div>
   <div class="hero-right">
     <div class="avatar-wrap">
+      <div class="avatar-glow"></div>
       <div class="avatar-ring"></div>
-      <div class="avatar-circle">
-        <img src="img/mm-designs44-1_1.jpg" alt="Muhammad Mehran" />
-      </div>
-      <div class="float-badge"><i class="fab fa-microsoft"></i> Dynamics 365 CRM</div>
-      <div class="float-badge"><i class="fas fa-bolt"></i> Power Platform</div>
-      <div class="float-badge"><i class="fas fa-database"></i> Microsoft Fabric</div>
+      <div class="avatar-circle"><img src="assets/images/m-mehran.png" alt="Muhammad Mehran"></div>
+      <div class="float-badge fb1"><i class="fab fa-microsoft"></i> Dynamics 365 CRM</div>
+      <div class="float-badge fb2"><i class="fas fa-bolt"></i> Power Platform</div>
+      <div class="float-badge fb3"><i class="fas fa-database"></i> Microsoft Fabric</div>
     </div>
   </div>
 </section>
 
+<div class="marquee-wrap"><div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span>Dynamics 365</span><span>Dataverse</span><span>C# Plugins</span><span>Power Automate</span><span>Power Apps</span><span>Microsoft Fabric</span><span>Copilot Studio</span><span>SSIS</span><span>Web API</span><span>.Net</span>
+    <span>Dynamics 365</span><span>Dataverse</span><span>C# Plugins</span><span>Power Automate</span><span>Power Apps</span><span>Microsoft Fabric</span><span>Copilot Studio</span><span>SSIS</span><span>Web API</span><span>.Net</span>
+  </div>
+</div></div>
+
+<!-- ═══ ABOUT ═══ -->
 <section id="about">
   <div class="section-inner">
-    <h2 class="section-title fade-in">Who I Am</h2>
-    <div class="divider fade-in"></div>
+    <div class="sec-head fade-in"><span class="eyebrow">About</span><h2 class="section-title">Who I Am</h2></div>
     <div class="about-grid">
       <div class="about-text fade-in">
         <p>I'm a Microsoft Dynamics 365 CRM Consultant with hands-on experience in designing and delivering scalable CRM and Power Platform solutions from end to end.</p>
         <p>I have a proven ability to lead small development teams, drive solution delivery, and implement complex integrations using APIs, Azure services, and data engineering tools including Microsoft Fabric.</p>
-        <p>My focus is always on performance, maintainability, and real business value — not just shipping code.</p>
+        <p>My focus is always on <strong>performance, maintainability, and real business value</strong> — not just shipping code.</p>
         <ul class="about-list">
           <li>CRM Customization</li><li>C# Plugins</li><li>Power Automate</li><li>Power Apps</li>
           <li>Canvas Apps</li><li>Web API / REST</li><li>SSIS / ETL</li><li>Microsoft Fabric</li>
           <li>Copilot Studio</li><li>Azure Services</li><li>n8n Automation</li><li>Team Leadership</li>
         </ul>
       </div>
-      <div class="about-info fade-in">
-        <div class="info-card"><div class="info-icon"><i class="fas fa-user"></i></div><div><div class="info-label">Full Name</div><div class="info-val">Muhammad Mehran</div></div></div>
-        <div class="info-card"><div class="info-icon"><i class="fas fa-envelope"></i></div><div><div class="info-label">Email</div><div class="info-val"><a href="mailto:mehranmehroo44@gmail.com">mehranmehroo44@gmail.com</a></div></div></div>
-        <div class="info-card"><div class="info-icon"><i class="fas fa-phone"></i></div><div><div class="info-label">Phone</div><div class="info-val"><a href="tel:+923416512242">+92 341 6512242</a></div></div></div>
-        <div class="info-card"><div class="info-icon"><i class="fas fa-map-marker-alt"></i></div><div><div class="info-label">Location</div><div class="info-val">Islamabad, Pakistan</div></div></div>
-        <div class="info-card"><div class="info-icon"><i class="fab fa-linkedin"></i></div><div><div class="info-label">LinkedIn</div><div class="info-val"><a href="https://linkedin.com/in/mmehran44" target="_blank">linkedin.com/in/mmehran44</a></div></div></div>
-        <div class="info-card"><div class="info-icon"><i class="fas fa-briefcase"></i></div><div><div class="info-label">Current Role</div><div class="info-val">Senior CRM Developer @ Skysoft</div></div></div>
+      <div class="about-cards fade-in">
+        <div class="card about-card"><div class="icon-box"><i class="fas fa-users"></i></div><div><div class="about-card-label">Leadership</div><div class="about-card-val">Leads teams of 2–4 developers</div></div></div>
+        <div class="card about-card"><div class="icon-box"><i class="fas fa-diagram-project"></i></div><div><div class="about-card-label">Focus</div><div class="about-card-val">CRM architecture, integrations &amp; AI Solutions</div></div></div>
+        <div class="card about-card"><div class="icon-box"><i class="fas fa-location-dot"></i></div><div><div class="about-card-label">Based in</div><div class="about-card-val">Islamabad, Pakistan</div></div></div>
       </div>
     </div>
   </div>
 </section>
 
+<!-- ═══ SKILLS ═══ -->
 <section id="skills">
   <div class="section-inner">
-    <h2 class="section-title fade-in">What I Work With</h2>
-    <div class="divider fade-in"></div>
+    <div class="sec-head fade-in"><span class="eyebrow">Skills</span><h2 class="section-title">What I Work With</h2></div>
     <div class="skills-grid">
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon blue"><i class="fab fa-microsoft"></i></div><div class="skill-card-title">CRM Platform</div></div><div class="skill-tags"><span class="skill-tag">Dynamics 365 CRM</span><span class="skill-tag">Sales Module</span><span class="skill-tag">Customer Service</span><span class="skill-tag">Dataverse</span><span class="skill-tag">Security Roles</span><span class="skill-tag">Business Rules</span><span class="skill-tag">Forms & Views</span><span class="skill-tag">Dashboards</span></div></div>
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon purple"><i class="fas fa-code"></i></div><div class="skill-card-title">Development</div></div><div class="skill-tags"><span class="skill-tag">C# Plugins</span><span class="skill-tag">Custom Workflow Activities</span><span class="skill-tag">JavaScript</span><span class="skill-tag">.NET Framework</span><span class="skill-tag">Visual Studio</span><span class="skill-tag">XRM Tooling</span><span class="skill-tag">FetchXML</span><span class="skill-tag">SQL Server</span></div></div>
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon green"><i class="fas fa-bolt"></i></div><div class="skill-card-title">Power Platform</div></div><div class="skill-tags"><span class="skill-tag">Power Automate</span><span class="skill-tag">Cloud Flows</span><span class="skill-tag">Model-driven Apps</span><span class="skill-tag">Canvas Apps</span><span class="skill-tag">Copilot Studio</span><span class="skill-tag">AI Builder</span></div></div>
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon blue"><i class="fas fa-database"></i></div><div class="skill-card-title">Microsoft Fabric & Data</div></div><div class="skill-tags"><span class="skill-tag">Microsoft Fabric</span><span class="skill-tag">Lakehouse</span><span class="skill-tag">Data Factory</span><span class="skill-tag">OneLake</span><span class="skill-tag">Dataflows Gen2</span><span class="skill-tag">SSIS</span><span class="skill-tag">ETL Pipelines</span><span class="skill-tag">Power BI</span></div></div>
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon purple"><i class="fas fa-robot"></i></div><div class="skill-card-title">AI & Automation</div></div><div class="skill-tags"><span class="skill-tag">Copilot Agents</span><span class="skill-tag">AI Lead Management</span><span class="skill-tag">n8n</span><span class="skill-tag">API Orchestration</span><span class="skill-tag">Process Automation</span></div></div>
-      <div class="skill-card fade-in"><div class="skill-card-head"><div class="skill-icon green"><i class="fas fa-plug"></i></div><div class="skill-card-title">Integration & DevOps</div></div><div class="skill-tags"><span class="skill-tag">Dynamics 365 Web API</span><span class="skill-tag">REST / OData</span><span class="skill-tag">Azure AD App Registrations</span><span class="skill-tag">Azure Logic Apps</span><span class="skill-tag">Solution ALM</span><span class="skill-tag">Environment Mgmt</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fab fa-microsoft"></i></div><div class="skill-card-title">CRM Platform</div></div><div class="tags"><span class="skill-tag">Dynamics 365 CRM</span><span class="skill-tag">Sales Module</span><span class="skill-tag">Customer Service</span><span class="skill-tag">Dataverse</span><span class="skill-tag">Security Roles</span><span class="skill-tag">Business Rules</span><span class="skill-tag">Forms &amp; Views</span><span class="skill-tag">Dashboards</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fas fa-code"></i></div><div class="skill-card-title">Development</div></div><div class="tags"><span class="skill-tag">C# Plugins</span><span class="skill-tag">Custom Workflow Activities</span><span class="skill-tag">JavaScript</span><span class="skill-tag">.NET Framework</span><span class="skill-tag">Visual Studio</span><span class="skill-tag">XRM Tooling</span><span class="skill-tag">FetchXML</span><span class="skill-tag">SQL Server</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fas fa-bolt"></i></div><div class="skill-card-title">Power Platform</div></div><div class="tags"><span class="skill-tag">Power Automate</span><span class="skill-tag">Cloud Flows</span><span class="skill-tag">Model-driven Apps</span><span class="skill-tag">Canvas Apps</span><span class="skill-tag">Copilot Studio</span><span class="skill-tag">AI Builder</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fas fa-database"></i></div><div class="skill-card-title">Microsoft Fabric &amp; Data</div></div><div class="tags"><span class="skill-tag">Microsoft Fabric</span><span class="skill-tag">Lakehouse</span><span class="skill-tag">Data Factory</span><span class="skill-tag">OneLake</span><span class="skill-tag">Dataflows Gen2</span><span class="skill-tag">SSIS</span><span class="skill-tag">ETL Pipelines</span><span class="skill-tag">Power BI</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fas fa-robot"></i></div><div class="skill-card-title">AI &amp; Automation</div></div><div class="tags"><span class="skill-tag">Copilot Agents</span><span class="skill-tag">AI Lead Management</span><span class="skill-tag">n8n</span><span class="skill-tag">API Orchestration</span><span class="skill-tag">Process Automation</span></div></div>
+      <div class="card skill-card fade-in"><div class="skill-card-head"><div class="icon-box"><i class="fas fa-plug"></i></div><div class="skill-card-title">Integration &amp; DevOps</div></div><div class="tags"><span class="skill-tag">Dynamics 365 Web API</span><span class="skill-tag">REST / OData</span><span class="skill-tag">Azure AD App Registrations</span><span class="skill-tag">Azure Logic Apps</span><span class="skill-tag">Solution ALM</span><span class="skill-tag">Environment Mgmt</span></div></div>
     </div>
   </div>
 </section>
 
+<!-- ═══ EXPERIENCE ═══ -->
 <section id="experience">
   <div class="section-inner">
-    <h2 class="section-title fade-in">Career Timeline</h2>
-    <div class="divider fade-in"></div>
+    <div class="sec-head fade-in"><span class="eyebrow">Experience</span><h2 class="section-title">Career Timeline</h2></div>
     <div class="timeline">
-      <div class="tl-item fade-in"><div class="tl-dot"><i class="fas fa-briefcase"></i></div><div class="tl-card"><div class="tl-header"><div class="tl-role">Senior Microsoft Dynamics 365 CRM Developer</div><span class="tl-date">Apr 2024 – Present</span></div><div class="tl-company">Skysoft Connections · Islamabad, Pakistan</div><ul class="tl-list"><li>Led a team of 2–4 developers, providing technical guidance, task allocation, and code reviews.</li><li>Designed and led end-to-end Dynamics 365 CRM solutions aligned with complex business requirements.</li><li>Implemented server-side C# plugins for advanced business logic, validations, and data processing.</li><li>Built and maintained Power Automate flows for process automation, notifications, and integrations.</li><li>Developed Canvas Apps for lightweight, user-friendly interfaces for targeted business scenarios.</li><li>Performed data migration using SSIS packages between Dynamics 365 and external systems.</li><li>Implemented Microsoft Copilot Agents for AI-assisted lead management and CRM workflows.</li><li>Worked with Microsoft Fabric to design data pipelines and Lakehouse-based storage for CRM analytics.</li><li>Managed solution deployments across dev, UAT, and production environments.</li></ul></div></div>
-      <div class="tl-item fade-in"><div class="tl-dot"><i class="fas fa-laptop-code"></i></div><div class="tl-card"><div class="tl-header"><div class="tl-role">Junior Dynamics 365 CRM Developer (Internship)</div><span class="tl-date">Jan 2024 – Mar 2024</span></div><div class="tl-company">Skysoft Connections · Islamabad, Pakistan</div><ul class="tl-list"><li>Gained hands-on experience in Dynamics 365 CRM customization, plugins, and JavaScript web resources.</li><li>Worked with Power Apps and Power Automate flows in real project contexts.</li><li>Supported SSIS-based data migration and CRM configuration activities.</li></ul></div></div>
+      <div class="tl-item fade-in">
+        <div class="tl-dot"><i class="fas fa-briefcase"></i></div>
+        <div class="card tl-card">
+          <div class="tl-header"><div class="tl-role">Senior Microsoft Dynamics 365 CRM Developer</div><span class="tl-date">Apr 2024 – Present</span></div>
+          <div class="tl-company">Skysoft Connections · Islamabad, Pakistan</div>
+          <ul class="tl-list">
+            <li>Led a team of 2–4 developers, providing technical guidance, task allocation, and code reviews.</li>
+            <li>Designed and led end-to-end Dynamics 365 CRM solutions aligned with complex business requirements.</li>
+            <li>Implemented server-side C# plugins for advanced business logic, validations, and data processing.</li>
+            <li>Built and maintained Power Automate flows for process automation, notifications, and integrations.</li>
+            <li>Developed Canvas Apps for lightweight, user-friendly interfaces for targeted business scenarios.</li>
+            <li>Performed data migration using SSIS packages between Dynamics 365 and external systems.</li>
+            <li>Implemented Microsoft Copilot Agents for AI-assisted lead management and CRM workflows.</li>
+            <li>Worked with Microsoft Fabric to design data pipelines and Lakehouse-based storage for CRM analytics.</li>
+            <li>Managed solution deployments across dev, UAT, and production environments.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tl-item fade-in">
+        <div class="tl-dot"><i class="fas fa-laptop-code"></i></div>
+        <div class="card tl-card single">
+          <div class="tl-header"><div class="tl-role">Junior Dynamics 365 CRM Developer (Internship)</div><span class="tl-date">Jan 2024 – Mar 2024</span></div>
+          <div class="tl-company">Skysoft Connections · Islamabad, Pakistan</div>
+          <ul class="tl-list">
+            <li>Gained hands-on experience in Dynamics 365 CRM customization, plugins, and JavaScript web resources.</li>
+            <li>Worked with Power Apps and Power Automate flows in real project contexts.</li>
+            <li>Supported SSIS-based data migration and CRM configuration activities.</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- ═══ PROJECTS ═══ -->
 <section id="projects">
   <div class="section-inner">
-    <h2 class="section-title fade-in">Key Deliverables</h2>
-    <div class="divider fade-in"></div>
-    <div class="projects-grid">
-      <div class="project-card fade-in"><div class="project-num">01 / AUTO MERCADO</div><div class="project-name">CRM Customization & Automation</div><div class="project-desc">Led customization and integration for Dynamics 365 CRM. Developed SSIS packages for bulk data import, custom Web APIs in C#/ASP.NET, and Power Automate flows to automate operations and improve efficiency.</div><div class="project-tags"><span class="project-tag">Dynamics 365</span><span class="project-tag">C# Plugins</span><span class="project-tag">SSIS</span><span class="project-tag">Web API</span><span class="project-tag">Power Automate</span></div></div>
-      <div class="project-card fade-in"><div class="project-num">02 / INTOCHEM</div><div class="project-name">CRM to ERP Integration</div><div class="project-desc">Designed and developed SSIS packages to integrate Dynamics 365 CRM with Softland ERP. Automated scheduled data transfers with error handling and logging, improving data consistency across systems.</div><div class="project-tags"><span class="project-tag">SSIS</span><span class="project-tag">Softland ERP</span><span class="project-tag">Data Integration</span><span class="project-tag">Error Handling</span></div></div>
-      <div class="project-card fade-in"><div class="project-num">03 / CRM CHIEF</div><div class="project-name">Multi-Tenant Data Migration</div><div class="project-desc">Executed phased data migration between multiple Dynamics 365 tenants. Ensured data integrity, validation, and minimal business disruption. Supported post-migration verification and issue resolution.</div><div class="project-tags"><span class="project-tag">Data Migration</span><span class="project-tag">Multi-Tenant</span><span class="project-tag">Dynamics 365</span><span class="project-tag">Validation</span></div></div>
-      <div class="project-card fade-in"><div class="project-num">04 / BOB WATCHES</div><div class="project-name">AI-Based Lead Management</div><div class="project-desc">Implemented AI-driven lead management within Dynamics 365 CRM. Enhanced lead scoring, prioritization, and follow-up efficiency using intelligent automation and Copilot Studio.</div><div class="project-tags"><span class="project-tag">Copilot Studio</span><span class="project-tag">AI Lead Scoring</span><span class="project-tag">Power Platform</span><span class="project-tag">n8n</span></div></div>
-      <div class="project-card fade-in"><div class="project-num">05 / SANA SANA HOSPITAL</div><div class="project-name">Healthcare CRM Customization</div><div class="project-desc">Customized Dynamics 365 CRM for hospital management workflows. Configured entities, forms, views, dashboards, and business rules for healthcare operations, streamlining patient management.</div><div class="project-tags"><span class="project-tag">Healthcare CRM</span><span class="project-tag">Customization</span><span class="project-tag">Business Rules</span><span class="project-tag">Dashboards</span></div></div>
+
+    <!-- Dynamics 365 project experience -->
+    <div class="sub-block">
+      <div class="sec-head fade-in">
+        <span class="eyebrow">Project Experience</span>
+        <h2 class="section-title">Dynamics 365 Project Experience</h2>
+        <!-- <p class="sec-sub">Anonymized delivery experience — portfolio aliases used.</p> -->
+      </div>
+      <div class="privacy-note fade-in"><i class="fas fa-user-shield"></i><div> The project names below are portfolio aliases. The technical scope reflects professional Dynamics 365 work, while real client names, production data, internal identifiers, credentials, URLs, proprietary screenshots, and confidential business details are intentionally excluded.</div></div>
+
+      <div class="projects-grid">
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">01 · RetailFlow</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Enterprise Retail CRM Automation &amp; Integration</div>
+          <div class="project-desc">Delivered Dynamics 365 CE customization, process automation, integration, and high-volume data engineering for an enterprise retail CRM environment, with a focus on reliability, maintainability, and operational performance.</div>
+          <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">C# / .NET</span><span class="tag">Power Automate</span><span class="tag">Web API</span><span class="tag">SSIS</span><span class="tag">Microsoft Fabric</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">CRM Automation &amp; Business Logic</div><div class="subdeliv-desc">Implemented plugins, JavaScript, Power Automate flows, validation logic, and integration processes for business-critical CRM operations.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Ordered Integration Request Processing</div><div class="subdeliv-desc">Designed an asynchronous request-processing pattern to decouple API intake from CRM execution and control concurrency for ordered updates.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Dataverse Archiving &amp; Retention</div><div class="subdeliv-desc">Worked on incremental Microsoft Fabric pipelines for archiving historical Dynamics 365 records, validating batches, and safely reducing Dataverse storage.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">02 · ERPBridge</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Dynamics 365 to ERP Integration</div>
+          <div class="project-desc">Designed data synchronization between Dynamics 365 and an external ERP platform using API and ETL patterns, with mapping, scheduling, validation, error handling, and operational logging.</div>
+          <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">ERP Integration</span><span class="tag">SSIS</span><span class="tag">REST APIs</span><span class="tag">SQL</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">Customer &amp; Transaction Synchronization</div><div class="subdeliv-desc">Mapped CRM and ERP data structures and supported scheduled synchronization for customer and transactional records.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Validation &amp; Failure Handling</div><div class="subdeliv-desc">Implemented data validation, logging, retry/error investigation, and reconciliation patterns to improve integration reliability.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">03 · TenantShift</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Multi-Tenant Dynamics 365 Data Migration</div>
+          <div class="project-desc">Executed phased migrations between Dynamics 365 environments with mapping, lookup sequencing, identifier preservation, validation, reconciliation, and post-migration verification.</div>
+          <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">Dataverse</span><span class="tag">SSIS</span><span class="tag">ETL</span><span class="tag">Data Validation</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">Phased Migration</div><div class="subdeliv-desc">Planned entity sequencing and repeatable import stages to preserve relationships and reduce migration risk.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Reconciliation</div><div class="subdeliv-desc">Validated source-to-target counts, mappings, failed records, ownership, and lookup integrity after each migration stage.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">04 · LeadIntelligence</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">AI-Assisted Lead Management</div>
+          <div class="project-desc">Implemented AI-assisted CRM workflows for lead analysis, prioritization, and follow-up using Dynamics 365, Copilot/agent capabilities, Power Platform automation, and external orchestration where appropriate.</div>
+          <div class="tags"><span class="tag">Copilot Studio</span><span class="tag">Dynamics 365</span><span class="tag">Power Platform</span><span class="tag">AI</span><span class="tag">Automation</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">Lead Prioritization</div><div class="subdeliv-desc">Used CRM context and intelligent automation to help users focus attention on higher-value leads and next actions.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Workflow Orchestration</div><div class="subdeliv-desc">Connected AI-assisted analysis with CRM processes while keeping business data and deterministic controls inside the platform.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">05 · CareFlow</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Healthcare CRM Customization</div>
+          <div class="project-desc">Customized Dynamics 365 for healthcare-oriented workflows using Dataverse tables, model-driven forms, views, dashboards, business rules, and process automation.</div>
+          <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">Dataverse</span><span class="tag">Model-driven Apps</span><span class="tag">Business Rules</span><span class="tag">Dashboards</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">Application Configuration</div><div class="subdeliv-desc">Configured tables, forms, views, dashboards, validations, and guided processes around operational requirements.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Process Automation</div><div class="subdeliv-desc">Used platform automation and business rules to reduce repetitive manual steps and improve data consistency.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">06 · GlobalSales</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Enterprise Sales CRM Modernization &amp; Data Engineering</div>
+          <div class="project-desc">Worked across Dynamics 365 Sales customization, security, data migration, integration, user-activity telemetry, duplicate-data resolution, and data-platform initiatives in a multi-business-unit enterprise CRM landscape.</div>
+          <div class="tags"><span class="tag">Dynamics 365 Sales</span><span class="tag">C# Plugins</span><span class="tag">JavaScript</span><span class="tag">Microsoft Graph</span><span class="tag">SSIS</span><span class="tag">Fabric</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">User Activity &amp; Access Telemetry</div><div class="subdeliv-desc">Designed a unified Dataverse activity model using Graph, Power Automate, JavaScript, and plugins to capture different user interaction signals.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Duplicate Account Resolution</div><div class="subdeliv-desc">Designed merge and GUID-mapping patterns to preserve downstream integration continuity after duplicate CRM records are consolidated.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Security &amp; Migration</div><div class="subdeliv-desc">Supported role/permission design, business-unit rollouts, data ingestion, and environment deployment activities.</div></div>
+          </div>
+        </div>
+
+        <div class="card project-card fade-in">
+          <div class="project-top"><span class="project-num">07 · DocumentHub</span><span class="badge">ALIAS</span></div>
+          <div class="project-name">Configuration-Driven SharePoint Document Management</div>
+          <div class="project-desc">Designed a reusable Dynamics 365 and SharePoint integration pattern for automatic folder creation, configurable naming rules, CRM Document Locations, and centralized table-level administration.</div>
+          <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">SharePoint</span><span class="tag">C#</span><span class="tag">JavaScript</span><span class="tag">Dataverse</span><span class="tag">Entra ID</span></div>
+          <button class="subdeliv-toggle" aria-expanded="false" onclick="toggleSubdeliv(this)"><i class="fas fa-chevron-right"></i> View key work areas</button>
+          <div class="subdeliv-list">
+            <div class="subdeliv-item"><div class="subdeliv-title">Configuration-Driven Behavior</div><div class="subdeliv-desc">Separated generic integration logic from table-specific configuration so new tables can adopt document management without separate implementations.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Document Location Automation</div><div class="subdeliv-desc">Automated SharePoint folder creation and Dataverse Document Location setup with configurable naming and fallback rules.</div></div>
+            <div class="subdeliv-item"><div class="subdeliv-title">Administration Experience</div><div class="subdeliv-desc">Used centralized settings and table-level controls to manage connection and folder behavior without exposing implementation details to end users.</div></div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <!-- Case studies -->
+    <div class="sub-block">
+      <div class="sec-head fade-in">
+        <span class="eyebrow">Case Studies</span>
+        <h2 class="section-title">Engineering &amp; Architecture Case Studies</h2>
+        <p class="sec-sub">Professional case studies — problem → architecture → outcome.</p>
+      </div>
+      <div class="privacy-note fade-in"><i class="fas fa-shield-halved"></i><div><strong>Portfolio-safe representation.</strong> These case studies are reconstructed at architecture level from professional experience. Client names, production data, internal identifiers, credentials, environment URLs, proprietary screenshots, and confidential implementation details are intentionally excluded.</div></div>
+
+      <!-- Image files go in assets/images/case-studies/ using the filenames below. A placeholder shows automatically if one is missing. -->
+      <div class="case-study-grid">
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Configuration-driven document architecture" src="assets/images/case-studies/Casestudy1.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dynamics 365 + SharePoint</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/01-sharepoint-configurable-architecture.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-folder-tree"></i></div><div><div class="case-kicker">01 / Integration Architecture</div><div class="case-title">Configuration-Driven Dynamics 365 &amp; SharePoint Integration</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Reusable document-management architecture that lets additional Dataverse tables adopt SharePoint folder creation, naming rules, and CRM Document Locations through configuration instead of separate table-specific implementations.</p>
+            <div class="architecture-flow"><span class="flow-node">Dynamics 365</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Configuration</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Naming Engine</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">SharePoint</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Document Location</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Repeated table-specific folder logic creates duplication, inconsistent naming, and unnecessary deployment effort.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Generic integration logic reads table-level configuration for enablement, folder naming, fallback behavior, and SharePoint destination.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">New CRM tables can adopt the same document-management pattern primarily through configuration.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">Dataverse</span><span class="tag">C#</span><span class="tag">SharePoint</span><span class="tag">Entra ID</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Unified user activity architecture" src="assets/images/case-studies/Casestudy2.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dynamics 365 Observability</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/02-user-activity-telemetry.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-chart-line"></i></div><div><div class="case-kicker">02 / Observability Architecture</div><div class="case-title">Unified Dynamics 365 User Activity Telemetry</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Unified activity model that normalizes sign-in, app access, view usage, and record-open signals into a central Dataverse store for reporting and operational visibility.</p>
+            <div class="architecture-flow"><span class="flow-node">Entra ID</span><i class="fas fa-plus flow-arrow"></i><span class="flow-node">App Events</span><i class="fas fa-plus flow-arrow"></i><span class="flow-node">Dataverse Events</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Unified Log</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Analytics</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Important user-activity signals exist at different layers and are difficult to analyze as one business-friendly dataset.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Use the right mechanism for each signal: Graph and automation for sign-ins, JavaScript for genuine client interactions, and plugins for server-side Dataverse events.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Consistent activity telemetry that can support usage analysis, reporting, troubleshooting, and governance.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Microsoft Graph</span><span class="tag">Power Automate</span><span class="tag">JavaScript</span><span class="tag">C# Plugins</span><span class="tag">Dataverse</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Ordered request processing architecture" src="assets/images/case-studies/Casestudy3.png"><div class="case-visual-overlay"><span class="case-visual-badge">.NET + Dataverse</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/03-ordered-request-processing.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-layer-group"></i></div><div><div class="case-kicker">03 / API &amp; Concurrency</div><div class="case-title">Ordered Request Processing for CRM Integrations</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Asynchronous request-processing pattern that separates API intake from Dynamics 365 processing so concurrent requests can be acknowledged quickly and executed in a controlled order.</p>
+            <div class="architecture-flow"><span class="flow-node">External System</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Web API</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">FIFO Queue</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Worker</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Dataverse</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Direct synchronous CRM processing under concurrency can increase response times and create race-condition or ordering issues.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Thread-safe FIFO queue, background processing, controlled execution, and structured logging separate request acceptance from business processing.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Fast acknowledgment with controlled, ordered execution. For durable delivery across restarts or multiple instances, the pattern can move to a service such as Azure Service Bus.</div></div>
+            </div>
+            <div class="tags"><span class="tag">ASP.NET Web API</span><span class="tag">C#</span><span class="tag">ConcurrentQueue</span><span class="tag">SemaphoreSlim</span><span class="tag">Dynamics 365</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="High-volume archiving and retention" src="assets/images/case-studies/Casestudy4.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dataverse + Fabric</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/04-fabric-archiving-retention.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-database"></i></div><div><div class="case-kicker">04 / Data Architecture</div><div class="case-title">High-Volume Dataverse Archiving &amp; Retention with Microsoft Fabric</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Incremental archival architecture for moving historical CRM data and related records into Microsoft Fabric, validating each batch, and safely reducing Dataverse storage through controlled retention processing.</p>
+            <div class="architecture-flow"><span class="flow-node">Dataverse</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Incremental Pipeline</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Fabric / OneLake</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Validation</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Retention Cleanup</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Large transactional tables and child records can make archival and deletion slow, expensive, and sensitive to batch size and timeout behavior.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Watermark-based incremental processing, dependency-aware archival, adaptive batching, verification, and controlled deletion.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">A repeatable retention pattern that separates historical analytical storage from operational CRM storage.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Microsoft Fabric</span><span class="tag">Dataverse</span><span class="tag">OneLake</span><span class="tag">Data Pipelines</span><span class="tag">Retention</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Enterprise integration architecture" src="assets/images/case-studies/Casestudy5.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dynamics 365 + ERP</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/05-crm-erp-integration.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-right-left"></i></div><div><div class="case-kicker">05 / Enterprise Integration</div><div class="case-title">CRM-to-ERP Integration Architecture</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Integration pattern for synchronizing customer and transactional data between Dynamics 365 and external ERP systems with mapping, validation, scheduling, and error handling.</p>
+            <div class="architecture-flow"><span class="flow-node">Dynamics 365</span><i class="fas fa-arrow-right-arrow-left flow-arrow"></i><span class="flow-node">Integration Layer</span><i class="fas fa-arrow-right-arrow-left flow-arrow"></i><span class="flow-node">ERP</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Logs / Reconciliation</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Business data must remain consistent across systems with different schemas, identifiers, validation rules, and processing schedules.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Explicit field mapping, staged transformations, API or ETL orchestration, error logging, retry-safe processing, and reconciliation checks.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Maintainable integration flows with clearer failure visibility and stronger cross-system data consistency.</div></div>
+            </div>
+            <div class="tags"><span class="tag">SSIS</span><span class="tag">KingswaySoft</span><span class="tag">REST APIs</span><span class="tag">SQL Server</span><span class="tag">Dynamics 365</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Duplicate resolution and GUID mapping" src="assets/images/case-studies/Casestudy6.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dataverse Data Quality</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/06-duplicate-resolution-guid-mapping.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-code-merge"></i></div><div><div class="case-kicker">06 / Data Quality &amp; Integration</div><div class="case-title">Duplicate Customer Resolution &amp; Final GUID Mapping</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Architecture for reviewing duplicate customer groups, merging them into a selected surviving record, and preserving final CRM GUID mappings so downstream systems continue resolving references correctly.</p>
+            <div class="architecture-flow"><span class="flow-node">Duplicate Detection</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Business Review</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">CRM Merge</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">GUID Mapping</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Downstream Resolution</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Merging CRM records can break external references when downstream integrations continue using old record identifiers.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Persist old-to-new GUID mappings and resolve merge chains so integrations always retrieve the final surviving CRM identifier.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Duplicate cleanup can proceed without losing referential continuity across CRM, ETL, and external systems.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Dataverse</span><span class="tag">C#</span><span class="tag">SQL Server</span><span class="tag">SSIS</span><span class="tag">Data Quality</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="Controlled migration architecture" src="assets/images/case-studies/Casestudy7.png"><div class="case-visual-overlay"><span class="case-visual-badge">Dynamics 365 Migration</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/07-multi-environment-data-migration.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-truck-moving"></i></div><div><div class="case-kicker">07 / Migration Engineering</div><div class="case-title">Multi-Environment Dynamics 365 Data Migration</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">Phased migration pattern for moving CRM data between Dynamics 365 environments while preserving lookup relationships, validating transformed data, reconciling counts, and reducing cutover risk.</p>
+            <div class="architecture-flow"><span class="flow-node">Source CRM</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Extract / Map</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Validate</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Target Dataverse</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Reconcile</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Moving CRM data between environments risks broken lookups, lost identifiers, and unverified records at cutover.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Data mapping, identifier preservation, lookup sequencing, validation, and reconciliation, treating migration as a repeatable pipeline with measurable checkpoints rather than a one-time import.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Reduced cutover risk, with post-migration verification of counts, mappings, and relationships.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Dynamics 365</span><span class="tag">Dataverse</span><span class="tag">SSIS</span><span class="tag">ETL</span><span class="tag">Validation</span></div>
+          </div>
+        </article>
+
+        <article class="card premium-case fade-in">
+          <div class="case-visual"><img loading="lazy" alt="AI-assisted lead process architecture" src="assets/images/case-studies/Casestudy8.png"><div class="case-visual-overlay"><span class="case-visual-badge">AI + Dynamics 365</span><span class="case-zoom-hint"><i class="fas fa-magnifying-glass-plus"></i> Click to enlarge</span></div><div class="case-image-placeholder"><div class="placeholder-icon"><i class="fas fa-image"></i></div><div class="placeholder-title">Add architecture visual</div><div class="placeholder-sub">assets/images/case-studies/08-ai-assisted-lead-management.png</div></div></div>
+          <div class="case-content">
+            <div class="case-top"><div class="icon-box"><i class="fas fa-robot"></i></div><div><div class="case-kicker">08 / AI-Assisted CRM</div><div class="case-title">AI-Assisted Lead Management &amp; Process Automation</div></div><span class="badge">SANITIZED</span></div>
+            <p class="case-desc">CRM automation pattern that combines Dynamics 365 data, Power Platform orchestration, and AI-assisted analysis to help prioritize leads, surface useful context, and support follow-up workflows.</p>
+            <div class="architecture-flow"><span class="flow-node">CRM Lead Data</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Automation</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">AI / Agent</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">Recommendation</span><i class="fas fa-arrow-right flow-arrow"></i><span class="flow-node">CRM Action</span></div>
+            <div class="case-meta">
+              <div class="case-meta-row"><div class="case-meta-label">Problem</div><div class="case-meta-value">Reviewing leads manually is repetitive and makes it harder to focus on the highest-value actions.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Approach</div><div class="case-meta-value">Use AI as an assistive layer around CRM data and workflows while keeping business data, permissions, and deterministic process controls in the platform.</div></div>
+              <div class="case-meta-row"><div class="case-meta-label">Outcome</div><div class="case-meta-value">Reduced repetitive review effort and better focus on higher-value CRM actions.</div></div>
+            </div>
+            <div class="tags"><span class="tag">Copilot Studio</span><span class="tag">Power Platform</span><span class="tag">Dynamics 365</span><span class="tag">Automation</span><span class="tag">AI</span></div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+
+    <!-- Labs -->
+    <div class="sub-block">
+      <div class="sec-head fade-in">
+        <span class="eyebrow">R&amp;D</span>
+        <h2 class="section-title">Labs &amp; Emerging Microsoft Technology</h2>
+        <p class="sec-sub">Technical exploration — not presented as client delivery.</p>
+      </div>
+      <div class="lab-grid">
+        <div class="card lab-card fade-in"><div class="lab-label"><i class="fas fa-flask"></i> Technical Exploration</div><div class="lab-title">Dataverse Prompt Columns</div><div class="lab-desc">Exploring AI-powered data enrichment directly inside Dataverse, including summarization, classification, sentiment, urgency, and next-action scenarios without building a separate AI integration for every use case.</div></div>
+        <div class="card lab-card fade-in"><div class="lab-label"><i class="fas fa-flask"></i> Architecture Study</div><div class="lab-title">Work IQ &amp; Business Context for AI</div><div class="lab-desc">Studying how Dynamics 365, Power Platform, Microsoft 365, and business context can contribute to richer Copilot and agent reasoning across sales and service scenarios.</div></div>
+        <div class="card lab-card fade-in"><div class="lab-label"><i class="fas fa-flask"></i> Integration R&amp;D</div><div class="lab-title">Dataverse MCP</div><div class="lab-desc">Exploring MCP as an agent-oriented interaction layer for Dataverse and how it complements established Web API, Custom API, and integration patterns.</div></div>
+        <div class="card lab-card fade-in"><div class="lab-label"><i class="fas fa-flask"></i> Maker / Developer R&amp;D</div><div class="lab-title">Generative Pages in Model-Driven Apps</div><div class="lab-desc">Exploring AI-generated application experiences inside model-driven apps and where they may fit alongside JavaScript, PCF controls, and custom pages.</div></div>
+      </div>
+    </div>
+
+    <!-- Independent projects -->
+    <div class="sub-block">
+      <div class="sec-head fade-in">
+        <span class="eyebrow">Independent</span>
+        <h2 class="section-title">Independent Projects</h2>
+        <p class="sec-sub">Personal and public projects, separate from professional client work.</p>
+      </div>
+      <div class="apps-grid">
+
+        <div class="card app-card fade-in">
+          <div class="app-card-head"><div class="icon-box"><i class="fas fa-mobile-screen-button"></i></div><div><div class="app-name">GPA Calculator UOM</div><span class="app-status live">Live on Play Store</span></div></div>
+          <div class="app-desc">A Flutter-based GPA/CGPA calculator for University of Malakand students, providing accurate subject, semester GPA, and overall CGPA calculations based on the university's grading system.<b>Key Features</b><span class="app-features">Semester GPA, Overall CGPA, Subject GPA, Grade Calculation, User-friendly Interface &amp; PDF Export</span></div>
+          <div class="tags"><span class="tag">Flutter</span><span class="tag">Dart</span></div>
+          <a class="app-link" href="https://play.google.com/store/apps/details?id=com.GPACalculator.uom_gpa_calculator&amp;hl=en_US" target="_blank" rel="noopener"><i class="fab fa-google-play"></i> View on Play Store</a>
+          <div class="app-screens">
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 1" src="assets/images/SCREEN1.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 2" src="assets/images/SCREEN2.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 3" src="assets/images/SCREEN3.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 4" src="assets/images/SCREEN4.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 5" src="assets/images/SCREEN5.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 6" src="assets/images/SCREEN6.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 7" src="assets/images/SCREEN7.PNG"></div>
+            <div class="gallery-shot"><img alt="GPA Calculator — screen 8" src="assets/images/SCREEN8.PNG"></div>
+          </div>
+        </div>
+
+        <div class="card app-card fade-in">
+          <div class="app-card-head"><div class="icon-box"><i class="fas fa-mobile-screen-button"></i></div><div><div class="app-name">KAARIGER</div><span class="app-status dev">Final Year Project</span></div></div>
+          <div class="app-desc">A Flutter-based mobile application that connects users with local skilled service providers such as plumbers, electricians, carpenters, and other professionals, with a simple way to explore service categories and find the right worker.<b>Key Features</b><span class="app-features">Service Categories, User Authentication, Service Provider Profiles, Firebase Integration, User-friendly Interface</span></div>
+          <div class="tags"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Firebase</span></div>
+          <a class="app-link placeholder" aria-hidden="true" tabindex="-1">&nbsp;</a>
+          <div class="app-screens">
+            <div class="gallery-shot"><img alt="Kaariger — splash screen" src="assets/images/splash.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — welcome screen" src="assets/images/welcome.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — login screen" src="assets/images/login.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — signup screen" src="assets/images/signup.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — home screen" src="assets/images/home.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — drawer menu" src="assets/images/drawer.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — category screen" src="assets/images/category.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — worker details 1" src="assets/images/worker%20details1.png"></div>
+            <div class="gallery-shot"><img alt="Kaariger — worker details 2" src="assets/images/worker%20details2.png"></div>
+          </div>
+        </div>
+
+        <div class="card app-card fade-in">
+          <div class="app-card-head"><div class="icon-box"><i class="fas fa-mobile-screen-button"></i></div><div><div class="app-name">Weather &amp; Event Alert App</div><span class="app-status dev">Personal Project</span></div></div>
+          <div class="app-desc">A Flutter-based mobile application that provides hyper-local weather updates, 7-day forecasts, severe weather alerts, and personalized event reminders, using WeatherAPI for data and Firebase/OneSignal for authentication, storage, and push notifications.<b>Key Features</b><span class="app-features">Current Weather, 7-Day Forecast, Weather Alerts, Event Reminders, Push Notifications, Google &amp; Email Authentication</span></div>
+          <div class="tags"><span class="tag">Flutter</span><span class="tag">Dart</span><span class="tag">Firebase</span><span class="tag">WeatherAPI</span><span class="tag">OneSignal</span></div>
+          <a class="app-link placeholder" aria-hidden="true" tabindex="-1">&nbsp;</a>
+          <div class="app-screens">
+            <div class="gallery-shot"><img alt="Weather App — splash screen" src="assets/images/SplashScreen.jpeg"></div>
+            <div class="gallery-shot"><img alt="Weather App — welcome screen" src="assets/images/welcome_screen.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — login screen" src="assets/images/login_screen.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — signup screen" src="assets/images/signup_screen.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — home screen" src="assets/images/home_screen1.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — weather details" src="assets/images/weatherdetails_screen.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — alert details" src="assets/images/alert_details.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — create event" src="assets/images/create_event.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — event details" src="assets/images/event_details.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — notification display" src="assets/images/notifcation_display.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — drawer menu" src="assets/images/drawerscreen.png"></div>
+            <div class="gallery-shot"><img alt="Weather App — weather map" src="assets/images/weather_map.png"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card otherwork-card fade-in">
+        <div class="otherwork-left">
+          <div class="icon-box"><i class="fas fa-palette"></i></div>
+          <div><div class="otherwork-title">Also work in graphic &amp; UI/UX design</div><div class="otherwork-desc">Logo, packaging &amp; post design, and UI/UX in Adobe XD, Illustrator &amp; Photoshop — view my design portfolio.</div></div>
+        </div>
+        <a class="app-link" href="https://www.behance.net/muhammadmehran12" target="_blank" rel="noopener">View Design Work <i class="fas fa-arrow-right"></i></a>
+      </div>
+    </div>
+
   </div>
 </section>
 
+<!-- ═══ CREDENTIALS ═══ -->
 <section id="education">
   <div class="section-inner">
-    <h2 class="section-title fade-in">Credentials</h2>
-    <div class="divider fade-in"></div>
+    <div class="sec-head fade-in"><span class="eyebrow">Education</span><h2 class="section-title">Credentials</h2></div>
     <div class="edu-grid">
-      <div class="edu-card fade-in"><div class="edu-head"><div class="edu-badge deg"><i class="fas fa-graduation-cap"></i></div><div><div class="edu-title">Bachelor of Computer Science</div><div class="edu-org">University of Malakand, KP, Pakistan</div></div></div><div class="edu-date">2019 – 2023</div></div>
-      <div class="edu-card fade-in"><div class="edu-head"><div class="edu-badge cert"><i class="fas fa-certificate"></i></div><div><div class="edu-title">Diploma in Information Technology</div><div class="edu-org">KPITB Peshawar, KP, Pakistan</div></div></div><div class="edu-date">2018 (1 Year)</div></div>
+      <div class="card edu-card fade-in"><div class="icon-box"><i class="fas fa-graduation-cap"></i></div><div><div class="edu-title">Bachelor of Computer Science</div><div class="edu-org">University of Malakand, KP, Pakistan</div><span class="edu-date">2019 – 2023</span></div></div>
+      <div class="card edu-card fade-in"><div class="icon-box"><i class="fas fa-certificate"></i></div><div><div class="edu-title">Diploma in Information Technology</div><div class="edu-org">KPITB Peshawar, KP, Pakistan</div><span class="edu-date">2018 (1 Year)</span></div></div>
     </div>
   </div>
 </section>
 
+<!-- ═══ CONTACT ═══ -->
 <section id="contact">
   <div class="section-inner">
-    <h2 class="section-title fade-in">Let's Work Together</h2>
-    <div class="divider fade-in"></div>
+    <div class="sec-head fade-in"><span class="eyebrow">Contact</span><h2 class="section-title">Let's Work Together</h2></div>
     <div class="contact-grid">
-      <div class="contact-info fade-in">
-        <p style="margin-bottom:1rem;">Have a Dynamics 365 project, integration challenge, or Power Platform requirement? I'd love to hear about it.</p>
-        <div class="contact-card"><div class="contact-icon"><i class="fas fa-envelope"></i></div><div><div class="contact-label">Email</div><div class="contact-val"><a href="mailto:mehranmehroo44@gmail.com">mehranmehroo44@gmail.com</a></div></div></div>
-        <div class="contact-card"><div class="contact-icon"><i class="fas fa-phone"></i></div><div><div class="contact-label">Phone</div><div class="contact-val"><a href="tel:+923416512242">+92 341 6512242</a></div></div></div>
-        <div class="contact-card"><div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div><div><div class="contact-label">Location</div><div class="contact-val">Islamabad, Pakistan</div></div></div>
-        <div class="contact-card"><div class="contact-icon"><i class="fab fa-linkedin"></i></div><div><div class="contact-label">LinkedIn</div><div class="contact-val"><a href="https://linkedin.com/in/mmehran44" target="_blank">linkedin.com/in/mmehran44</a></div></div></div>
+      <div class="fade-in">
+        <p class="contact-intro">Have a Dynamics 365 project, integration challenge, or Power Platform requirement? I'd love to hear about it.</p>
+        <div class="contact-info">
+          <div class="card contact-card"><div class="icon-box"><i class="fas fa-envelope"></i></div><div><div class="contact-label">Email</div><div class="contact-val"><a href="mailto:mehranmehroo44@gmail.com">mehranmehroo44@gmail.com</a></div></div></div>
+          <div class="card contact-card"><div class="icon-box"><i class="fas fa-phone"></i></div><div><div class="contact-label">Phone</div><div class="contact-val"><a href="tel:+923416512242">+92 341 6512242</a></div></div></div>
+          <div class="card contact-card"><div class="icon-box"><i class="fas fa-location-dot"></i></div><div><div class="contact-label">Location</div><div class="contact-val">Islamabad, Pakistan</div></div></div>
+          <div class="card contact-card"><div class="icon-box"><i class="fab fa-linkedin"></i></div><div><div class="contact-label">LinkedIn</div><div class="contact-val"><a href="https://linkedin.com/in/mmehran44" target="_blank" rel="noopener">linkedin.com/in/mmehran44</a></div></div></div>
+        </div>
       </div>
-      <form class="contact-form fade-in" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" onsubmit="return handleFormSubmit(event)">
-        <div class="form-group"><label>YOUR NAME</label><input type="text" name="name" required /></div>
-        <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" name="_replyto" required /></div>
-        <div class="form-group"><label>MESSAGE</label><textarea name="message" rows="4" required></textarea></div>
-        <button type="submit" class="form-submit">Send Message →</button>
-        <p id="form-status" style="font-size:0.8rem; color:#10b981; display:none;">✓ Message sent! I'll get back to you soon.</p>
+      <form class="card contact-form fade-in" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST" onsubmit="return handleFormSubmit(event)">
+        <div class="form-group"><label for="f-name">YOUR NAME</label><input id="f-name" name="name" type="text" required></div>
+        <div class="form-group"><label for="f-email">EMAIL ADDRESS</label><input id="f-email" name="_replyto" type="email" required></div>
+        <div class="form-group"><label for="f-msg">MESSAGE</label><textarea id="f-msg" name="message" rows="5" required></textarea></div>
+        <button class="btn-primary form-submit" type="submit">Send Message <i class="fas fa-paper-plane"></i></button>
+        <p id="form-status">✓ Message sent! I'll get back to you soon.</p>
       </form>
     </div>
   </div>
 </section>
 
+<!-- ═══ LIGHTBOX ═══ -->
+<div class="lightbox-overlay" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" aria-label="Close" onclick="closeLightbox(event)"><i class="fas fa-xmark"></i></button>
+  <button class="lightbox-nav prev" aria-label="Previous" onclick="lightboxMove(event,-1)"><i class="fas fa-chevron-left"></i></button>
+  <img id="lightbox-img" src="" alt="Enlarged screenshot" onclick="event.stopPropagation()">
+  <button class="lightbox-nav next" aria-label="Next" onclick="lightboxMove(event,1)"><i class="fas fa-chevron-right"></i></button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
 <footer>
   <div class="footer-container">
     <div class="footer-logo">MUHAMMAD MEHRAN</div>
-    <div class="footer-copy">© 2025 Muhammad Mehran. All rights reserved.</div>
+    <div class="footer-copy">© 2026 Muhammad Mehran. All rights reserved.</div>
     <div class="social-links">
-      <a href="mailto:mehranmehroo44@gmail.com"><i class="fas fa-envelope"></i></a>
-      <a href="https://linkedin.com/in/mmehran44" target="_blank"><i class="fab fa-linkedin"></i></a>
-      <a href="tel:+923416512242"><i class="fas fa-phone"></i></a>
+      <a href="mailto:mehranmehroo44@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+      <a href="https://linkedin.com/in/mmehran44" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+      <a href="tel:+923416512242" aria-label="Phone"><i class="fas fa-phone"></i></a>
     </div>
   </div>
 </footer>
 
 <script>
-  function toggleMenu() {
-    const menu = document.getElementById('mobileMenu');
-    const btn = document.getElementById('hamburger');
-    const expanded = menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', expanded);
+  /* mobile menu */
+  function toggleMenu(){
+    const open = document.getElementById('mobileMenu').classList.toggle('open');
+    document.getElementById('hamburger').setAttribute('aria-expanded', open);
   }
-  function closeMenu() {
+  function closeMenu(){
     document.getElementById('mobileMenu').classList.remove('open');
-    document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+    document.getElementById('hamburger').setAttribute('aria-expanded','false');
   }
 
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  /* scroll reveal */
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); }
+  }), { threshold: .1 });
+  document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
 
+  /* active nav link */
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('.nav-links a, .mobile-menu a');
-  function setActiveLink() {
-    let current = '';
-    sections.forEach(s => { if(window.scrollY >= s.offsetTop - 80) current = s.id; });
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if(link.getAttribute('href') === '#' + current) link.classList.add('active');
-    });
+  function setActiveLink(){
+    let current = 'home';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+    navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + current));
   }
-  window.addEventListener('scroll', setActiveLink);
+  window.addEventListener('scroll', setActiveLink, { passive: true });
   window.addEventListener('load', setActiveLink);
 
-  async function handleFormSubmit(event) {
-    event.preventDefault();
-    const form = event.target;
-    const status = document.getElementById('form-status');
-    const formData = new FormData(form);
-    try {
-      const response = await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-      if(response.ok) {
-        status.style.display = 'block';
-        form.reset();
-        setTimeout(() => status.style.display = 'none', 4000);
-      } else throw new Error();
-    } catch(error) {
-      status.style.color = '#ef4444';
-      status.innerText = '❌ Error. Please email me directly.';
-      status.style.display = 'block';
-      setTimeout(() => { status.style.display = 'none'; status.innerText = '✓ Message sent! I\'ll get back to you soon.'; status.style.color = '#10b981'; }, 4000);
+  /* stat count-up */
+  document.querySelectorAll('[data-count]').forEach(el => {
+    const target = +el.dataset.count; let n = 0;
+    const step = Math.max(1, Math.ceil(target / 20));
+    el.textContent = '0';
+    const t = setInterval(() => { n = Math.min(target, n + step); el.textContent = n; if (n >= target) clearInterval(t); }, 70);
+  });
+
+  /* expandable work areas */
+  function toggleSubdeliv(btn){
+    const open = btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', open);
+    btn.nextElementSibling.classList.toggle('open', open);
+  }
+
+  /* lightbox */
+  let lbImages = [], lbIndex = 0;
+  function updateLightbox(){
+    document.getElementById('lightbox-img').src = lbImages[lbIndex];
+    const multi = lbImages.length > 1;
+    const c = document.getElementById('lightbox-counter');
+    c.style.display = multi ? 'block' : 'none';
+    c.textContent = (lbIndex + 1) + ' / ' + lbImages.length;
+    document.querySelectorAll('.lightbox-nav').forEach(n => n.style.display = multi ? 'grid' : 'none');
+  }
+  function openLightbox(images, start){
+    lbImages = images; lbIndex = start; updateLightbox();
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function lightboxMove(e, dir){
+    if (e) e.stopPropagation();
+    lbIndex = (lbIndex + dir + lbImages.length) % lbImages.length;
+    updateLightbox();
+  }
+  function closeLightbox(e){
+    if (e) e.stopPropagation();
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape') closeLightbox();
+    if (e.key === 'ArrowLeft') lightboxMove(null, -1);
+    if (e.key === 'ArrowRight') lightboxMove(null, 1);
+  });
+
+  /* app screenshot galleries: 3 visible tiles, "+N" badge, full set in lightbox */
+  document.querySelectorAll('.app-screens').forEach(box => {
+    const shots = [...box.querySelectorAll(':scope > .gallery-shot')];
+    const imgs = shots.map(s => s.querySelector('img').src);
+    if (shots.length > 3){
+      const b = document.createElement('div');
+      b.className = 'more-overlay';
+      b.textContent = '+' + (shots.length - 3);
+      shots[2].appendChild(b);
     }
+    shots.forEach((s, i) => s.addEventListener('click', () => openLightbox(imgs, i)));
+  });
+
+  /* case-study visuals: placeholder when the image is missing */
+  document.querySelectorAll('.case-visual').forEach(v => {
+    const img = v.querySelector('img');
+    const missing = () => { v.classList.add('missing-image'); img.style.display = 'none'; };
+    const ok = () => { v.classList.remove('missing-image'); img.style.display = 'block'; };
+    img.addEventListener('error', missing);
+    img.addEventListener('load', () => img.naturalWidth ? ok() : missing());
+    if (img.complete) img.naturalWidth ? ok() : missing();
+    v.addEventListener('click', () => { if (!v.classList.contains('missing-image')) openLightbox([img.src], 0); });
+  });
+
+  /* contact form */
+  async function handleFormSubmit(e){
+    e.preventDefault();
+    const form = e.target, status = document.getElementById('form-status');
+    try{
+      const r = await fetch(form.action, { method:'POST', body:new FormData(form), headers:{Accept:'application/json'} });
+      if (!r.ok) throw 0;
+      status.textContent = "✓ Message sent! I'll get back to you soon."; status.style.color = '';
+      form.reset();
+    }catch{
+      status.textContent = '✕ Something went wrong. Please email me directly.'; status.style.color = '#f87171';
+    }
+    status.style.display = 'block';
+    setTimeout(() => status.style.display = 'none', 4500);
     return false;
   }
 </script>
