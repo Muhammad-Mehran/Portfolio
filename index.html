@@ -496,6 +496,32 @@ footer{border-top:1px solid var(--line);background:rgba(5,9,18,.6)}
 @media (max-width:1060px){
   .case-visual{min-height:220px}   /* safety net so the image area never collapses */
 }
+   /* ═══ Case study images: full-width on tablet & mobile ═══ */
+@media (max-width:1060px){
+  .premium-case{grid-template-columns:minmax(0,1fr) !important}
+  .case-visual{
+    aspect-ratio:auto !important;
+    height:auto !important;
+    min-height:0 !important;
+    display:block;
+    padding:.6rem;
+  }
+  .case-visual img{
+    position:static !important;   /* stop absolute positioning */
+    inset:auto !important;
+    display:block;
+    width:100% !important;
+    height:auto !important;       /* keep the image's own proportions */
+    max-width:100%;
+    margin:0 auto;
+    padding:0 !important;
+    object-fit:contain;
+    object-position:center;
+  }
+  .case-visual.missing-image{min-height:220px !important}
+  .case-visual-overlay{background:none}   /* remove the dark fade over the image */
+  .case-visual-badge,.case-zoom-hint{bottom:.6rem}
+}
 </style>
 </head>
 <body>
